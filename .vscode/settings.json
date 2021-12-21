@@ -5,5 +5,10 @@
     "latex-workshop.latex.autoBuild.run": "onSave",
     "latex-workshop.latex.outDir": "%DIR%/latex-build",
     "latex-workshop.view.pdf.viewer": "browser",
-    "cSpell.minWordLength": 2
+    "cSpell.minWordLength": 2,
+    "cSpell.language": "en,pl",
+    "cSpell.words": [
+        "modularność",
+        "Rossum"
+    ]
 }
