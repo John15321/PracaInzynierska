@@ -3,7 +3,7 @@
 # Custom
 /latex-build/
 *.log
-/versions
+# /versions
 /img/drawio/**.drawio.pdf
 **.private.**
 

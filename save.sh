@@ -1,4 +1,4 @@
-#!/bash/sh
+#!/bin/sh
 ##
 ## Skrypt do zapisu kolejnych wersji pracy na podstawie tagów w historii git'a.
 ## Testowany pod git bash'em na Windowsie.
@@ -13,6 +13,6 @@ mkdir -p versions
 cp "$path" "versions/PracaDyplomowa-$version.pdf"
 cp "$path" "versions/PracaDyplomowa-LAST.pdf"
 
-cd versions
-start .
-cd ..
+# cd versions
+# start .
+# cd ..
