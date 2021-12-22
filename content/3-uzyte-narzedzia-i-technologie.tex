@@ -3,12 +3,12 @@
 
 
 \section{Język Python}
-Język \textbf{Python} jest bardzo popularnym, nowoczesnym oraz wysokopoziomowym językiem programowania. Czytając artykuły i inne treści na temat historii \textbf{Python} \cite{HistoriaPythona} \cite{WikiepdiaPythonProgrammingLanauge} dowiadujemy się, że język powstał w 1991 roku. Stworzony przez Guido van Rossum podczas swojej pracy w laboratorium w Centrum Matematyki i Informatyki w Amsterdamie, pierwotnie tworzony był z myślą zastąpienia rozwijanego w latach osiemdziesiątych języka \textbf{ABC}. Samą nazwę język Python nazwę zawdzięcza popularnemu serialowi komediowemu emitowanego przez BBC w latach siedemdziesiątych - ``Latający Cyrk Monty Pythona'', którego Guido był fanem.
+Język \textbf{Python} jest bardzo popularnym, nowoczesnym oraz wysokopoziomowym językiem programowania. Czytając artykuły i inne treści na temat historii \textbf{Python} \cite{HistoriaPythona} \cite{WikipediaPythonProgrammingLanauge} dowiadujemy się, że język powstał w 1991 roku. Stworzony przez Guido van Rossum podczas swojej pracy w laboratorium w Centrum Matematyki i Informatyki w Amsterdamie, pierwotnie tworzony był z myślą zastąpienia rozwijanego w latach osiemdziesiątych języka \textbf{ABC}. Samą nazwę język Python nazwę zawdzięcza popularnemu serialowi komediowemu emitowanego przez BBC w latach siedemdziesiątych - ``Latający Cyrk Monty Pythona'', którego Guido był fanem.
 Projekt początkowo zakładał stworzenie prostego w użyciu, zwięzłego i wysokopoziomowego języka, głównie na potrzeby pracy w Amsterdamskim laboratorium. Z biegiem czasu \textbf{Python} stał się rozwijanym przez społeczność projektem \textbf{Open Source}, nad którym czuwała organizacja non-profit założona przez Guido von Rossum'a, \textbf{Python Software Foundation}.
 
 \textbf{Python} jest multi-paradygmatowym językiem, gdzie programowanie obiektowe i strukturalne są w pełni wspierane, wiele cech języka wspiera programowanie funkcyjne i aspektowe. Wiele innych paradygmatów jest wspieranych dzięki modularnym rozszerzeniom do języka.
 \textbf{Python} w przeciwieństwie do języków statycznie typowanych takich jak \textbf{C}, \textbf{Rust} czy \textbf{TypeScript}, stosuje typowanie dynamiczne, które sprawdza poprawność i bezpieczeństwo typów w programie, dynamicznie, podczas jego egzekucji, w przeciwieństwie do typowania statycznego, gdzie typy sprawdzane są podczas kompilacji kodu. Dodatkowo \textbf{Python} posiada kombinacje zliczania referencji oraz cyklicznego \textbf{Garbage Collector}'a.
-Architektura języka \textbf{Python} oferuje wsparcie, dla programowanie funkcyjnego zgodnego z tradycją języka \textbf{List}. Język posiada typowe, dla języków funkcyjnych funkcje takie jak \lcode{filter}, \lcode{map}, \lcode{reduce}, list comprehensions, słowniki oraz generatory. Standardowa biblioteka języka posiada moduły \lcode{itertools} oraz \lcode{functools}, które implementują narzędzia funkcjonalne zapożyczone z języków \textbf{Haskell} oraz \textbf{Standard ML}.
+Architektura języka \textbf{Python} oferuje wsparcie, dla programowanie funkcyjnego zgodnego z tradycją języka \textbf{List}. Język posiada typowe, dla języków funkcyjnych funkcje takie jak \lcode{filter}, \lcode{map}, \lcode{reduce}, \lcode{lambda}, list comprehensions, słowniki oraz generatory. Standardowa biblioteka języka posiada moduły \lcode{itertools} oraz \lcode{functools}, które implementują narzędzia funkcjonalne zapożyczone z języków \textbf{Haskell} oraz \textbf{Standard ML}.
 
 Zamiast polegać na wbudowanej funkcjonalności w jądro języka, \textbf{Python} został zaprojektowany tak, aby być najmożliwiej elastyczny, aby mógł współdziałać z różnymi odrębnymi modułami. Sama kompaktowa modularność sprawiła, że język stał się popularnym sposobem, na dodawanie programowalnego interfejsu to istniejących już aplikacji oraz języków programowania.
 \textbf{CPython} jest referencyjną implementacją \textbf{Python}'a, napisaną w \textbf{C}, która spełnia standard \textbf{C89} z niektórymi cechami standardu \textbf{C99}. Jedną z charakterystyk implementacji \textbf{CPython}'a jest to, że zespół odpowiedzialny za rozwój oraz utrzymanie kodu jego interpretera preferuje odrzucanie poprawek do kodu mających na celu marginalną poprawę szybkości i sprawności interpretera w zamian za zachowanie czystości i czytelności kodu źródłowego. Taka długoterminowa postawa umożliwiła powstanie powstanie innych implementacji języka \textbf{Python} opartych o inne rozwiązania, bądź inne języki za pomocą których napisany został sam interpreter. Dzięki różnorodności implementacji \textbf{Python}'a, jego modularności i łatwej rozbudowie o obce rozszerzenia programista może zdecydować się na przeniesienie wrażliwych na czas wykonywania funkcjonalności do odrębnych modułów napisanych w innych językach takich jak \textbf{C}, lub \textbf{Rust}, albo użyć wyspecjalizowanej do tego odmiany samego interpretera takiej jak \textbf{PyPy}, która posiada tak zwany \textbf{JIT}, czyli \textbf{Just-In-Time compiler}, pozwalający na optymalizację kodu na system bądź architekturę docelową danego programu.
@@ -40,31 +40,19 @@ Główną funkcjonalnością biblioteki \textbf{NumPy} jest jej \lcode{ndarray},
 
 \section{Biblioteka Matplotlib}
 
-Biblioteka \textbf{Matplotlib} \cite{MatplotlibDocumentation} \cite{Matplotlib30Cookbook} \cite{PythonForDataAnalysis} \cite{WikiepdiaMatplotlib} jest najpopularniejszym \textbf{Python}'owym narzędziem służącym do tworzenia wykresów, grafów, histogramów, obrazów, wielowymiarowych grafów i rysunków służących do wizualizacji danych.
+Biblioteka \textbf{Matplotlib} \cite{MatplotlibDocumentation} \cite{Matplotlib30Cookbook} \cite{PythonForDataAnalysis} \cite{WikipediaMatplotlib} jest najpopularniejszym \textbf{Python}'owym narzędziem służącym do tworzenia wykresów, grafów, histogramów, obrazów, wielowymiarowych grafów i rysunków służących do wizualizacji danych. Oryginalnie stworzona prze z John D. Hunter'a miała za zadanie tworzyć przyzwoicie wyglądające wykresy, które można by poddać publikacji. Mimo, że inne biblioteki są dostępne większość programistów używa \textbf{Matplotlib}'a jako, że jest on najpopularniejszy oraz najbardziej i najlepiej rozbudowany ze wszystkich nie wspominając o jego wpasowaniu w istniejący ekosystem Data Science.
+
+\textbf{Matplotlib} zapewnia obiektowo zorientowane \textbf{API} do tworzenia i używania generowanych wykresów w toolkitach \textbf{GUI} takich jak \textbf{Tkinter} \textbf{wxPython}, \textbf{Qt}, lub \textbf{GTK}. Dodatkowo istnieje również proceduralny interfejs ``\textbf{pylab}'' bazujący na maszynie stanu (podobnie do \textbf{OpenGL}), zaprojektowany, aby przypominać interface \textbf{MATLAB}'a.
+
+\textbf{Pyplot} to moduł \textbf{Matplotlib}'a, który jest zaprojektowany z myślą bycia używalnym pod kątem programistycznym tak jak \textbf{MATLAB}, ale z dodatkową zaletą pozostawania w przestrzeni języka \textbf{Python}, która jest Open Source i darmowa.
+
 
 \section{PyGame}
 
-
-\section{Klasy abstrakcyjne}
-
-
+\textbf{PyGame} \cite{PyGameDocumentation} \cite{WikipediaPyGame} jest cross-platform'ową biblioteką stworzoną, dla języka \textbf{Python} zaprojektowaną z myślą tworzenia prostych gier i animacji. Zawiera w sobie biblioteki odpowiadające za grafikę i dźwięk.
+\textbf{PyGame}, był oryginalnie napisany przez Pete Shinners'a, w celu zastąpienia \textbf{PySDL} po tym jak jego developemnt został zatrzymany. Od roku 2000 jest to projekt społeczności i został objęty licencją \textbf{GNU Lesser General Public License}, która pozwala na dystrybucje \textbf{PyGame}'a zarówno wraz z Open Source'owym oprogramowaniem jak i tym prawnie zastrzeżonym prawami autorskimi.
 
 
-\paragraph{Ukryty link do spisu treści}
-Kliknij na numer strony, a pod nim masz ukryty odnośnik do spisu treści. Bardzo ułatwia skakanie po pdf'ie.
 
-\paragraph{Używasz vscode?}
-Zobacz na polecane wtyczki w README.
 
-\paragraph{Jak wydzilić z tesktu}
-Jak cokolwiek chcesz oddzielić z tekstu możesz użyć \lcode{onepage[Xmm]}.
-
-\begin{onepage}[1cm]
-    \centering
-    Alias dolor odit. Velit et ut harum. Quos ullam enim suscipit qui omnis dolorum.
-\end{onepage}
-
-Reszta tekstu.
-Doloremque voluptas sit mollitia eos ut aut. Qui et distinctio vitae. Possimus et in. Est provident qui sequi est nobis cupiditate magni. Recusandae animi aut non ea autem ipsam dolores hic repellendus.
-
-I chyba nic więcej nie potrzeba. Powodzenia!
+% \section{Klasy abstrakcyjne} ?????????
