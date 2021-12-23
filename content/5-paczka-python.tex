@@ -1,28 +1,126 @@
 \section{PyPI}
-\section{Budowa paczki}
-\section{Architektura paczki}
+
+\textbf{PyPI}, \cite{PyPI} \cite{AdvancedPythonDevelopment} czyli \textbf{Python Package Index} jest oficjalnym repozytorium, dla języka \textbf{Python} przeznaczonym na third-party paczki przeznaczone, dla języka, które może zainstalować każdy użytkownik. \textbf{PyPI} jest operowany przez \textbf{Python Software Foundation}, która jest non-profit organizacją odpowiedzialną za utrzymywanie języka \textbf{Python} i jego  środowiska. Niektóre menadżery paczek takie jak \textbf{pip} \cite{Pip} używają \textbf{PyPI} jako domyślnego źródła paczek i ich zależności. Na dzień 30 października 2021 roku, ponad $336 \ 000$ \textbf{Python}'owych paczek może zostać w ten sposób zainstalowane. \textbf{PyPI} głównie hostuje \textbf{Python}'owe paczki w formie nazywanej ``\textbf{sdists}'', czyli z \textit{ang. ``\textbf{source distributions}''}, lub w formie pre-kompilowanej tak zwanej ``\textbf{wheels}''. \textbf{PyPI} jako indeks paczek pozwala użytkownikowi na wyszukiwanie paczek za pomocą konkretnych słów lub filtrów, przeszukując metadane paczek, takie jak licencje czy kompatybilność ze standardem \textbf{POSIX}. Pojedyncza paczka na \textbf{PyPI} może posiadać, pomijając metadane, poprzednie wersje paczki, pre-kompilowane \textbf{wheel}'e (na przykład zawierające \textbf{DLL}'e na system Windows), lub innych form przewidzianych na inne systemy operacyjne i wersje \textbf{Python}'a.
+
+\textbf{Python Distribution Utilities}, czyli w skrócie nazywane ``\textbf{distutils}'', to moduł dodany do \textbf{Python}'a, we wrześniu roku 2000, jako część standardowej biblioteki języka w wersji \lcode{1.6.1}, 9 lat po wyjściu pierwszej oficjalnej wersji \textbf{Python}'a, mając na celu uproszczenie instalacji third-party paczek.
+Jednakże, \textbf{distutils} dawało jedynie narzędzie służące do tworzenia paczek, dla kodu napisanego w \textbf{Python}'ie, i nic więcej. Umiało zebrać, i dystrybuować metadane paczki, ale nie używało ich w żaden inny sposób. \textbf{Python} ciągle potrzebował scentralizowanego katalogu paczek znajdującego się w internecie. \textbf{PEP 241} \cite{PEP241} zaproponował standaryzacje indeksów, która została sfinalizowana w marcu 2001 roku.
+
+
+\clearpage
+
 \section{Cookiecutter}
-\section{Publikowanie paczki}
-\subsection{Pip}
-\subsection{Twine}
-\subsection{Wheels}
-\section{Dokumentacja paczki}
+\textbf{Cookiecutter} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych \textbf{cookiecutters}, czyli gotowych szablonów, za pomocą, których \textbf{Cookiecutter} umie stworzyć szablon paczki.
 
-\paragraph{Ukryty link do spisu treści}
-Kliknij na numer strony, a pod nim masz ukryty odnośnik do spisu treści. Bardzo ułatwia skakanie po pdf'ie.
+W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inteligentnie zastąpić imiona i strukturę folderów oraz plików i ich zawartości. Co bardzo dobrze pokazuje poniżej zamieszczony przykład:
 
-\paragraph{Używasz vscode?}
-Zobacz na polecane wtyczki w README.
-
-\paragraph{Jak wydzilić z tesktu}
-Jak cokolwiek chcesz oddzielic z tekstu możesz użyć \lcode{onepage[Xmm]}.
-
-\begin{onepage}[1cm]
+\begin{figure}[h]
     \centering
-    Alias dolor odit. Velit et ut harum. Quos ullam enim suscipit qui omnis dolorum.
+    \bigimage{img/cookiecutter_example.png}
+    \caption{Przykład działania Cookiecutter'a \cite{CookiecutterExample}}
+    \label{img:cookiecutter_example}
+\end{figure}
+
+
+\clearpage
+\section{Tworzenie paczki}
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Przykład C\#},
+    label=code:ckrzak,
+    language={Bash},
+    escapechar=`,
+    numbers=none
+]
+$ cookiecutter gh:giswqs/pypackage
+full_name [Qiusheng Wu]: Jan Bronicki
+email [admin@example.com]: janbronicki@gmail.com
+github_username [giswqs]: John15321
+project_name [Python Boilerplate]: Simple Game AI
+project_slug [simple_game_ai]: sgai
+project_short_description: Simple Game AI package allows to easily define an
+interface for a game and train a simple neural net to play it
+pypi_username [John15321]: John15321
+version [0.0.1]: 0.0.1
+use_pytest [n]:
+add_pyup_badge [n]:
+create_author_file [n]:
+Select command_line_interface:
+1 - No command-line interface
+2 - Click
+3 - Argparse
+Choose from 1, 2, 3 [1]: 1
+Select open_source_license:
+1 - MIT license
+2 - BSD license
+3 - ISC license
+4 - Apache Software License 2.0
+5 - GNU General Public License v3
+6 - Not open source
+Choose from 1, 2, 3, 4, 5, 6 [1]: 1
+Select github_default_branch:
+1 - main
+2 - master
+Choose from 1, 2 [1]: 2
+\end{lstlisting}
 \end{onepage}
 
-Reszta tekstu.
-Doloremque voluptas sit mollitia eos ut aut. Qui et distinctio vitae. Possimus et in. Est provident qui sequi est nobis cupiditate magni. Recusandae animi aut non ea autem ipsam dolores hic repellendus.
 
-I chyba nic więcej nie potrzeba. Powodzenia!
+
+
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Przykład C\#},
+    label=code:ckrzak,
+    language={Bash},
+    escapechar=`,
+    numbers=none
+]
+.
+└── sgai
+   ├── docs
+   │  ├── contributing.md
+   │  ├── faq.md
+   │  ├── index.md
+   │  ├── installation.md
+   │  ├── overrides
+   │  ├── sgai.md
+   │  └── usage.md
+   ├── LICENSE
+   ├── MANIFEST.in
+   ├── mkdocs.yml
+   ├── README.md
+   ├── requirements.txt
+   ├── requirements_dev.txt
+   ├── setup.cfg
+   ├── setup.py
+   ├── sgai
+   │  ├── __init__.py
+   │  └── sgai.py
+   └── tests
+      ├── __init__.py
+      └── test_sgai.py
+
+      
+    \end{lstlisting}
+\end{onepage}
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Przykład C\#},
+    label=code:ckrzak,
+    language={Bash},
+    escapechar=`,
+    numbers=none
+]
+      
+    \end{lstlisting}
+\end{onepage}
+
+\section{Publikowanie paczki}
