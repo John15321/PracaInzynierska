@@ -7,6 +7,7 @@ Jednakże, \textbf{distutils} dawało jedynie narzędzie służące do tworzenia
 
 
 \clearpage
+\section{Struktura paczki Python}
 
 \section{Cookiecutter}
 \textbf{Cookiecutter} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych \textbf{cookiecutters}, czyli gotowych szablonów, za pomocą, których \textbf{Cookiecutter} umie stworzyć szablon paczki.
@@ -22,13 +23,13 @@ W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inte
 
 
 \clearpage
-\section{Tworzenie paczki}
+\section{Tworzenie mojej paczki}
 
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Przykład C\#},
-    label=code:ckrzak,
+    caption={Użytek Cookiecutter'a},
+    label=code:cookiecutter_gh,
     language={Bash},
     escapechar=`,
     numbers=none
@@ -70,42 +71,40 @@ Choose from 1, 2 [1]: 2
 
 
 
-
+Za pomocą komendy \lcode{tree} możemy zobczyć jaką strukturę paczki wygenerował, dla nas \textbf{Cookiecutter}:
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Przykład C\#},
-    label=code:ckrzak,
+    caption={Wygenerowana struktura paczki za pomocą Cookiecutter'a},
+    label=code:tree_sgai_cookiecutter_template,
     language={Bash},
-    escapechar=`,
     numbers=none
 ]
+$ tree
 .
-└── sgai
-   ├── docs
-   │  ├── contributing.md
-   │  ├── faq.md
-   │  ├── index.md
-   │  ├── installation.md
-   │  ├── overrides
-   │  ├── sgai.md
-   │  └── usage.md
-   ├── LICENSE
-   ├── MANIFEST.in
-   ├── mkdocs.yml
-   ├── README.md
-   ├── requirements.txt
-   ├── requirements_dev.txt
-   ├── setup.cfg
-   ├── setup.py
-   ├── sgai
-   │  ├── __init__.py
-   │  └── sgai.py
-   └── tests
-      ├── __init__.py
-      └── test_sgai.py
-
-      
+|-- docs
+|   |-- contributing.md
+|   |-- faq.md
+|   |-- index.md
+|   |-- installation.md
+|   |-- overrides
+|   |   `-- main.html
+|   |-- sgai.md
+|   `-- usage.md
+|-- LICENSE
+|-- MANIFEST.in
+|-- mkdocs.yml
+|-- README.md
+|-- requirements_dev.txt
+|-- requirements.txt
+|-- setup.cfg
+|-- setup.py
+|-- sgai
+|   |-- __init__.py
+|   `-- sgai.py
+`-- tests
+    |-- __init__.py
+    `-- test_sgai.py
     \end{lstlisting}
 \end{onepage}
 
@@ -113,14 +112,165 @@ Choose from 1, 2 [1]: 2
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Przykład C\#},
+    caption={Struktura gotowej paczki},
     label=code:ckrzak,
     language={Bash},
-    escapechar=`,
     numbers=none
 ]
-      
+$ tree
+.
+|-- AUTHORS.rst
+|-- docs
+|   |-- authors.rst
+|   |-- contributing.md
+|   |-- faq.md
+|   |-- index.md
+|   |-- installation.md
+|   |-- overrides
+|   |   `-- main.html
+|   |-- sgai.md
+|   `-- usage.md
+|-- LICENSE
+|-- MANIFEST.in
+|-- mkdocs.yml
+|-- README.md
+|-- requirements_dev.txt
+|-- requirements.txt
+|-- setup.cfg
+|-- setup.py
+|-- sgai
+|   |-- agent
+|   |   |-- agent.py
+|   |   |-- config.py
+|   |   |-- data_helper.py
+|   |   |-- __init__.py
+|   |   |-- model.py
+|   |   `-- trainer.py
+|   |-- __init__.py
+|   `-- sgai.py
+`-- tests
+    |-- __init__.py
+    `-- test_sgai.py
     \end{lstlisting}
 \end{onepage}
+
+
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:ckrzak,
+    language={Bash},
+    numbers=none
+]
+$ python setup.py sdist
+...
+Writing sgai-0.0.3/setup.cfg
+creating dist
+Creating tar archive
+    \end{lstlisting}
+\end{onepage}
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:ckrzak,
+    language={Bash},
+    numbers=none
+]
+$ tree
+.
+...
+|-- dist
+|   `-- sgai-0.0.3.tar.gz
+...
+    \end{lstlisting}
+\end{onepage}
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:ckrzak,
+    language={Bash},
+    numbers=none
+]
+$ twine upload ./dist/sgai-0.0.3.tar.gz
+Uploading distributions to https://upload.pypi.org/legacy/
+Enter your username: John15321
+Enter your password:
+Uploading sgai-0.0.3.tar.gz
+
+View at:
+https://pypi.org/project/sgai/0.0.3/
+    \end{lstlisting}
+\end{onepage}
+
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/sgai_on_pypi.png}
+
+    \caption{Paczka sgai widoczna na stronie PyPI}
+    \label{img:sgai_on_pypi}
+\end{figure}
+
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:ckrzak,
+    language={Bash},
+    numbers=none
+]
+$ pip install sgai
+
+Collecting sgai
+  Downloading sgai-0.0.3.tar.gz (7.4 kB)
+  Preparing metadata (setup.py) ... done
+  ...
+
+$ pip list
+
+Package           Version
+----------------- -------
+...
+sgai              0.0.3
+...
+\end{lstlisting}
+\end{onepage}
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:ckrzak,
+    language={Bash},
+    numbers=none
+]
+$ ipython
+
+In [1]: import sgai
+
+
+In [2]: sgai?
+Type:        module
+String form: <module 'sgai' from '/Users/jbron/sgai/sgai/__init__.py'>
+File:        ~/sgai/sgai/__init__.py
+Docstring:   Top-level package for Simple Game AI.
+
+\end{lstlisting}
+\end{onepage}
+
+
+
+
+
 
 \section{Publikowanie paczki}
