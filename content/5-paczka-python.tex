@@ -25,10 +25,12 @@ W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inte
 \clearpage
 \section{Tworzenie mojej paczki}
 
+Używając gotowego szablonu \textbf{Cookiecutter}'a 
+\url{https://github.com/giswqs/geodemo} tworzymy szkielet naszej paczki:
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Użytek Cookiecutter'a},
+    caption={Użycie Cookiecutter'a},
     label=code:cookiecutter_gh,
     language={Bash},
     escapechar=`,
@@ -67,9 +69,10 @@ Choose from 1, 2 [1]: 2
 \end{lstlisting}
 \end{onepage}
 
+Wybrany szablon przygotowuje nam wiele narzędzi takie jak na przykład \lcode{mkdcos}, narzędzie służące do generowania dokumetnacji w języku \textbf{Markdown}.
+Dodatkowo tworzy on automatycznie configurację \textbf{CI/CD Pipeline}.
 
-
-
+\clearpage
 
 Za pomocą komendy \lcode{tree} możemy zobczyć jaką strukturę paczki wygenerował, dla nas \textbf{Cookiecutter}:
 
@@ -109,11 +112,15 @@ $ tree
 \end{onepage}
 
 
+Widzimy, że \textbf{Cookiecutter} stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku \textbf{Markdown}, plik \lcode{LICENSE} opisujący licencję \textbf{MIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}
+
+
+
 
 \begin{onepage}
     \begin{lstlisting}[
     caption={Struktura gotowej paczki},
-    label=code:ckrzak,
+    label=code:tree_sgai,
     language={Bash},
     numbers=none
 ]
@@ -160,8 +167,8 @@ $ tree
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Struktura gotowej paczki},
-    label=code:ckrzak,
+    caption={Generacja paczki},
+    label=code:python_setuppy,
     language={Bash},
     numbers=none
 ]
@@ -176,8 +183,8 @@ Creating tar archive
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Struktura gotowej paczki},
-    label=code:ckrzak,
+    caption={Zbudowana source distribution paczki},
+    label=code:tree_dist,
     language={Bash},
     numbers=none
 ]
@@ -193,8 +200,8 @@ $ tree
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Struktura gotowej paczki},
-    label=code:ckrzak,
+    caption={Upload zbudowanej paczki na \textbf{PyPI}},
+    label=code:twine_upload,
     language={Bash},
     numbers=none
 ]
@@ -213,8 +220,7 @@ https://pypi.org/project/sgai/0.0.3/
 \begin{figure}[h]
     \centering
     \bigimage{img/sgai_on_pypi.png}
-
-    \caption{Paczka sgai widoczna na stronie PyPI}
+    \caption{Paczka sgai widoczna na stronie \textbf{PyPI}}
     \label{img:sgai_on_pypi}
 \end{figure}
 
@@ -223,8 +229,8 @@ https://pypi.org/project/sgai/0.0.3/
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Struktura gotowej paczki},
-    label=code:ckrzak,
+    caption={Instalacja paczki używając narzędzia \textbf{pip}},
+    label=code:pip_install_gai,
     language={Bash},
     numbers=none
 ]
@@ -249,9 +255,9 @@ sgai              0.0.3
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Struktura gotowej paczki},
-    label=code:ckrzak,
-    language={Bash},
+    caption={Importowanie zainstalowanej paczki},
+    label=code:import_sgai,
+    language={Python},
     numbers=none
 ]
 $ ipython
