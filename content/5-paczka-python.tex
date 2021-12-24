@@ -7,7 +7,6 @@ Jednakże, \textbf{distutils} dawało jedynie narzędzie służące do tworzenia
 
 
 \clearpage
-\section{Struktura paczki Python}
 
 \section{Cookiecutter}
 \textbf{Cookiecutter} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych \textbf{cookiecutters}, czyli gotowych szablonów, za pomocą, których \textbf{Cookiecutter} umie stworzyć szablon paczki.
@@ -25,7 +24,7 @@ W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inte
 \clearpage
 \section{Tworzenie paczki}
 
-Używając gotowego szablonu \textbf{Cookiecutter}'a 
+Używając gotowego szablonu \textbf{Cookiecutter}'a
 \url{https://github.com/giswqs/geodemo} tworzymy szkielet naszej paczki:
 
 \begin{onepage}
@@ -165,6 +164,10 @@ $ tree
 \end{onepage}
 
 
+\clearpage
+
+\section{Publikowanie paczki}
+
 
 Następnie za pomocą skryptu \lcode{setup.py} tworzymy źródłową dystrybucje paczki, uzyskując plik z rozszerzeniem \lcode{.tar.gz}:
 
@@ -182,6 +185,7 @@ creating dist
 Creating tar archive
     \end{lstlisting}
 \end{onepage}
+
 
 Owy plik znajduje się w nowo powstałym folderze \lcode{dist} w \textbf{root}'cie projektu:
 
@@ -202,7 +206,7 @@ $ tree
 \end{onepage}
 
 
-Następnie za pomocą narzędzia \lcode{twine} uploadujemy wygenerowany plik do indeksu \textbf{PyPi}:
+Następnie za pomocą narzędzia \lcode{twine} uploadujemy wygenerowany plik do indeksu \textbf{PyPI}:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -222,16 +226,18 @@ https://pypi.org/project/sgai/0.0.3/
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
+
+Otwierając stronę pod adresem \url{https://pypi.org/project/sgai} widoczna i gotowa to instalacji jest paczka \lcode{sgai}:
 
 \begin{figure}[h]
     \centering
-    \bigimage{img/sgai_on_pypi.png}
+    \mediumimage{img/sgai_on_pypi.png}
     \caption{Paczka sgai widoczna na stronie \textbf{PyPI}}
     \label{img:sgai_on_pypi}
 \end{figure}
 
-
-
+Aby sprawdzić czy paczka została poprawnie dodana do globalnego indeksu \textbf{PyPI} w nowym środowisku możemy spróbować zainstalować paczkę \lcode{sgai} w następujący sposób:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -246,7 +252,18 @@ Collecting sgai
   Downloading sgai-0.0.3.tar.gz (7.4 kB)
   Preparing metadata (setup.py) ... done
   ...
+\end{lstlisting}
+\end{onepage}
 
+Po zakończonej sukcesem instalacji, możemy sprawdzić czy pip widzi naszą paczke i jej wersje wykonując poniższą komende:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Wylistowanie paczki za pomocą narzędzia \textbf{pip}},
+    label=code:pip_list_gai,
+    language={Bash},
+    numbers=none
+]
 $ pip list
 
 Package           Version
@@ -258,6 +275,9 @@ sgai              0.0.3
 \end{onepage}
 
 
+\clearpage
+
+Korzystając z interaktywnego interpretera \textbf{Python}'a, \textbf{IPython}, możemy spróbować zaimportować zainstalowaną paczkę i wyświetlić jej metadane:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -280,9 +300,8 @@ Docstring:   Top-level package for Simple Game AI.
 \end{lstlisting}
 \end{onepage}
 
+Wszystko się zgadza co oznacza, że paczka została poprawnie udostępniona i zainstalowana.
 
 
 
 
-
-\section{Publikowanie paczki}
