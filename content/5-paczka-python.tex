@@ -23,7 +23,7 @@ W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inte
 
 
 \clearpage
-\section{Tworzenie mojej paczki}
+\section{Tworzenie paczki}
 
 Używając gotowego szablonu \textbf{Cookiecutter}'a 
 \url{https://github.com/giswqs/geodemo} tworzymy szkielet naszej paczki:
@@ -112,10 +112,13 @@ $ tree
 \end{onepage}
 
 
-Widzimy, że \textbf{Cookiecutter} stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku \textbf{Markdown}, plik \lcode{LICENSE} opisujący licencję \textbf{MIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}
+Widzimy, że \textbf{Cookiecutter} stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku \textbf{Markdown}, plik \lcode{LICENSE} opisujący licencję \textbf{MIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}, plik konfiguracyjny \lcode{mkdocs.yml} odpowiadający za konfiguracje dokumentacji \textbf{Markdown}, plik \lcode{README.md} opisujący podstawowe informacje apropos paczki, \lcode{requirements.txt}, który wskazuje \textbf{pip}'owi wymagane zależności wymagane, dla poprawnego działania paczki, \lcode{requirements_dev.txt}, czyli wymagane zależności do pracy nad paczką, takie jak formater kodu \lcode{black}, lub \lcode{pytest} służący do automatyzowania testów, \lcode{setup.cfg}, który funkcjonuje jako plik konfiguracyjny, dla \lcode{setup.py}.
+Następnie widzimy folder \lcode{sgai}, który jest miejscem na kod źródłowy.
 
 
+\clearpage
 
+Tak prezentuje się struktura projektu po dodaniu odpowiednich plików kodu źródłowego:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -163,7 +166,7 @@ $ tree
 
 
 
-
+Następnie za pomocą skryptu \lcode{setup.py} tworzymy źródłową dystrybucje paczki, uzyskując plik z rozszerzeniem \lcode{.tar.gz}:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -180,6 +183,7 @@ Creating tar archive
     \end{lstlisting}
 \end{onepage}
 
+Owy plik znajduje się w nowo powstałym folderze \lcode{dist} w \textbf{root}'cie projektu:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -197,6 +201,8 @@ $ tree
     \end{lstlisting}
 \end{onepage}
 
+
+Następnie za pomocą narzędzia \lcode{twine} uploadujemy wygenerowany plik do indeksu \textbf{PyPi}:
 
 \begin{onepage}
     \begin{lstlisting}[
