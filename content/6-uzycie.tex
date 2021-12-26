@@ -1,7 +1,7 @@
 
 
 
-\section{Własna gra - Snake}
+\section{Gra Snake}
 
 \textbf{Snake} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty w postaci. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
 Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku \textbf{Python}, przy użyciu paczki \textbf{PyGame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
@@ -135,25 +135,12 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
     caption={Instalacja paczki używając narzędzia \textbf{pip}},
     label=code:pip_install_gai,
     language={Python},
-    numbers=none
+    numbers=left
 ]
-    def perform_action(self, state) -> Tuple[int, bool, int]:
-        # Get random moves: tradeoff exploration / exploitation
-        self.epsilon = 80 - self.number_of_games
-        final_move = [0, 0, 0]
-        if random.randint(0, 200) < self.epsilon:
-            move = random.randint(0, 2)
-            final_move[move] = 1
-        else:
-            state0 = torch.tensor(state, dtype=torch.float)
-            prediction = self.model(state0)
-            move = torch.argmax(prediction).item()
-            final_move[move] = 1
-
-        return final_move
-
-    \end{lstlisting}
-\end{onepage}
+    def perform_action(self, final_move) -> Tuple[int, bool, int]:
+        reward, game_over, score = self.game.play_step(final_move)
+        return reward, game_over, score
+    \end{lstlisting} \end{onepage}
 
 \begin{figure}[h]
     \centering
