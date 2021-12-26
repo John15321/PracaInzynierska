@@ -129,6 +129,10 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
+
+Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan oraz wynik gry, zaimplementowanie funkcji \lcode{perform_action()} jest bardzo proste:
+
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -140,7 +144,12 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
     def perform_action(self, final_move) -> Tuple[int, bool, int]:
         reward, game_over, score = self.game.play_step(final_move)
         return reward, game_over, score
-    \end{lstlisting} \end{onepage}
+    \end{lstlisting}
+\end{onepage}
+
+
+WNIOSKI
+
 
 \begin{figure}[h]
     \centering
@@ -148,5 +157,3 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
     \caption{Wykres nauki sieci neuronowej}
     \label{img:ai_graph}
 \end{figure}
-
-\subsection{Cudza gra - PyGame Examples}
