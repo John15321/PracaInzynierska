@@ -4,15 +4,20 @@
 
 \subsection{Własna gra - Snake}
 
+\textbf{Snake} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty w postaci. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
+Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku \textbf{Python}, przy użyciu paczki \textbf{PyGame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
+Wąż został przestawiony w postaci linii składającej się z pojedynczych zielonych kwadratów. Wąż zaczyna z trzema zielonymi kwadratami, każdy dodatkowo zdobyty punkt podłuża węża o jeden kwadrat. Punkty możliwe do zdobycia są reprezentowany w postaci czerwonych kwadratów.
 
-
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \mediumimage{img/snake1.png}
     \caption{Gra Snake}
     \label{img:snake_game}
 \end{figure}
 
+\clearpage
+
+Gra jest zaimplementowana głównie w klasie \lcode{SnakeGame}, która odpowiada za główną mechanikę gry oraz przechowywanie jej stanu.
 
 \begin{figure}[h]
     \centering
