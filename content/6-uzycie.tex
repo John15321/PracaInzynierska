@@ -1,8 +1,7 @@
-\section{Użycie}
 
 
 
-\subsection{Własna gra - Snake}
+\section{Własna gra - Snake}
 
 \textbf{Snake} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty w postaci. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
 Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku \textbf{Python}, przy użyciu paczki \textbf{PyGame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
@@ -17,47 +16,49 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
 
 \clearpage
 
-Gra jest zaimplementowana głównie w klasie \lcode{SnakeGame}, która odpowiada za główną mechanikę gry oraz przechowywanie jej stanu.
-
-\begin{figure}[h]
-    \centering
-    \bigimage{img/ai_graph2.png}
-    \caption{Wykres nauki sieci neuronowej}
-    \label{img:ai_graph}
-\end{figure}
-
-
+Większość mechaniki gry została zaimplementowana w klasie \lcode{SnakeGame}, która odpowiada za mechanikę gry oraz przechowywanie jej stanu. Znajdują się w niej między innymi mechaniki odpowiedzialne za wykrywanie zderzeń, poruszanie się węża, sterowanie wężem, czy losowanie miejsca pojawienia się następnych punktów. Dodatkowo zaimplementowane zostały klasy enumeratorowe, takie jak \lcode{Direction} i \lcode{GamePoint} w celu zwiększenia czytelności kodu:
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Instalacja paczki używając narzędzia \textbf{pip}},
-    label=code:pip_install_gai,
-    language={Python},
-    numbers=none
-]
-
-import numpy as np
-import torch
-from sgai.agent.trainer import Trainer
-
-from snake import Direction, GamePoint, SnakeGame
-\end{lstlisting}
+        caption={Instalacja paczki używając narzędzia \textbf{pip}},
+        label=code:pip_install_gai,
+        language={Python},
+        numbers=left,
+        ]
+        import numpy as np
+        import torch
+        from sgai.agent.trainer import Trainer
+        
+        from snake import Direction, GamePoint, SnakeGame
+    \end{lstlisting}
 \end{onepage}
 
 
 
+Następnie definiujemy potrzebny interfejs \lcode{Trainer}, aby paczka \lcode{sgai} umiała się komunikować z grą. Zaczynami od definicji klasy i jej konstruktora. W tym przykładzie wielkość warstwy ukrytej pozostawiamy nie zmienioną ponieważ podstawowa w pełni wystarczy do poziomu skomplikowania przygotowanej gry:
+
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Instalacja paczki używając narzędzia \textbf{pip}},
+        caption={Instalacja paczki używając narzędzia \textbf{pip}},
     label=code:pip_install_gai,
     language={Python},
-    numbers=none
+    numbers=left
 ]
-
 class MyTrainer(Trainer):
     def __init__(self, game, input_size: int, output_size: int):
         super().__init__(game, input_size, output_size)
+    \end{lstlisting}
+\end{onepage}
 
+Następnie definiujemy dwie funkcje \lcode{get_state()}, oraz \lcode{perform_action()}. Są one interfejsem pomiędzy paczką \lcode{sgai}, a kodem gry, dlatego to użytkownik paczki musi je zaimplementować, ponieważ paczka nie ma możliwości posiadania wiedzy na temat własności działania kodu gry na, której będzie szkolić sieć neuronową. Na samym początku definiujemy stan gry, pobierając konkretne elementy rozgrywki takie jak pozycja węża, pozycja nagrody itp.:
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Instalacja paczki używając narzędzia \textbf{pip}},
+    label=code:pip_install_gai,
+    language={Python},
+    numbers=left
+]
     def get_state(self) -> np.ndarray:
         head = self.game.snake[0]
         point_left = GamePoint(head.x - 20, head.y)
@@ -72,6 +73,21 @@ class MyTrainer(Trainer):
     \end{lstlisting}
 \end{onepage}
 
+W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących stan gry, które następnie zostaną przekazane sieci neuronowej jako wejście. Gdzie każda z wartości może być jedynie $0$, lub $1$, $0$ oznaczające \lcode{False}, a $1$ \lcode{True}:
+
+\begin{itemize}
+    \item Czy jakieś niebezpieczeństwo znajduje się naprzeciwko?
+    \item Czy niebezpieczeństwo znajduje się po prawej?
+    \item Czy niebezpieczeństwo znajduje się po lewej?
+    \item Czy wąż porusza się w lewo?
+    \item Czy wąż porusza się w prawo?
+    \item Czy wąż porusza się w górę?
+    \item Czy wąż porusza się w dół?
+    \item Czy jedzenie znajduje się po lewej?
+    \item Czy jedzenie znajduje się po prawej?
+    \item Czy jedzenie znajduje się nad wężem?
+    \item Czy jedzenie znajduje się pod wężem?
+\end{itemize}
 
 
 \begin{onepage}
@@ -79,7 +95,7 @@ class MyTrainer(Trainer):
     caption={Instalacja paczki używając narzędzia \textbf{pip}},
     label=code:pip_install_gai,
     language={Python},
-    numbers=none
+    numbers=left
 ]
         state = [
             # Danger straight
@@ -112,6 +128,8 @@ class MyTrainer(Trainer):
         return np.array(state, dtype=int)
     \end{lstlisting}
 \end{onepage}
+
+
 \begin{onepage}
     \begin{lstlisting}[
     caption={Instalacja paczki używając narzędzia \textbf{pip}},
@@ -136,4 +154,12 @@ class MyTrainer(Trainer):
 
     \end{lstlisting}
 \end{onepage}
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/ai_graph2.png}
+    \caption{Wykres nauki sieci neuronowej}
+    \label{img:ai_graph}
+\end{figure}
+
 \subsection{Cudza gra - PyGame Examples}
