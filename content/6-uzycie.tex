@@ -3,7 +3,7 @@
 
 \section{Gra Snake}
 
-\textbf{Snake} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty w postaci. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
+\textbf{Snake} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty losowo porozmieszczane po mapie. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
 Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku \textbf{Python}, przy użyciu paczki \textbf{PyGame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
 Wąż został przestawiony w postaci linii składającej się z pojedynczych zielonych kwadratów. Wąż zaczyna z trzema zielonymi kwadratami, każdy dodatkowo zdobyty punkt podłuża węża o jeden kwadrat. Punkty możliwe do zdobycia są reprezentowany w postaci czerwonych kwadratów.
 
@@ -20,10 +20,10 @@ Większość mechaniki gry została zaimplementowana w klasie \lcode{SnakeGame},
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={Instalacja paczki używając narzędzia \textbf{pip}},
-        label=code:pip_install_gai,
+        caption={Importowanie gry},
+        label=code:import_snake,
         language={Python},
-        numbers=left,
+        numbers=none,
         ]
         import numpy as np
         import torch
@@ -39,10 +39,10 @@ Następnie definiujemy potrzebny interfejs \lcode{Trainer}, aby paczka \lcode{sg
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={Instalacja paczki używając narzędzia \textbf{pip}},
-    label=code:pip_install_gai,
+        caption={Definicja klasy \lcode{MyTrainer}},
+    label=code:definition_my_trainer,
     language={Python},
-    numbers=left
+    numbers=none
 ]
 class MyTrainer(Trainer):
     def __init__(self, game, input_size: int, output_size: int):
@@ -54,10 +54,10 @@ Następnie definiujemy dwie funkcje \lcode{get_state()}, oraz \lcode{perform_act
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={Instalacja paczki używając narzędzia \textbf{pip}},
-    label=code:pip_install_gai,
+        caption={Definicja funkcji \lcode{get_state()}},
+    label=code:definition_get_state,
     language={Python},
-    numbers=left
+    numbers=none
 ]
     def get_state(self) -> np.ndarray:
         head = self.game.snake[0]
@@ -92,10 +92,10 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Instalacja paczki używając narzędzia \textbf{pip}},
-    label=code:pip_install_gai,
+    caption={Zwracany stan},
+    label=code:return_state,
     language={Python},
-    numbers=left
+    numbers=none
 ]
         state = [
             # Danger straight
@@ -136,10 +136,10 @@ Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Instalacja paczki używając narzędzia \textbf{pip}},
-    label=code:pip_install_gai,
+    caption={Implementacja funkcji \lcode{perform_action()}},
+    label=code:definition_perform_action,
     language={Python},
-    numbers=left
+    numbers=none
 ]
     def perform_action(self, final_move) -> Tuple[int, bool, int]:
         reward, game_over, score = self.game.play_step(final_move)
@@ -149,7 +149,6 @@ Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan
 
 
 WNIOSKI
-
 
 \begin{figure}[h]
     \centering

@@ -1,6 +1,6 @@
 \section{PyPI}
 
-\textbf{PyPI}, \cite{PyPI} \cite{AdvancedPythonDevelopment} czyli \textbf{Python Package Index} jest oficjalnym repozytorium, dla języka \textbf{Python} przeznaczonym na third-party paczki przeznaczone, dla języka, które może zainstalować każdy użytkownik. \textbf{PyPI} jest operowany przez \textbf{Python Software Foundation}, która jest non-profit organizacją odpowiedzialną za utrzymywanie języka \textbf{Python} i jego  środowiska. Niektóre menadżery paczek takie jak \textbf{pip} \cite{Pip} używają \textbf{PyPI} jako domyślnego źródła paczek i ich zależności. Na dzień 30 października 2021 roku, ponad $336 \ 000$ \textbf{Python}'owych paczek może zostać w ten sposób zainstalowane. \textbf{PyPI} głównie hostuje \textbf{Python}'owe paczki w formie nazywanej ``\textbf{sdists}'', czyli z \textit{ang. ``\textbf{source distributions}''}, lub w formie pre-kompilowanej tak zwanej ``\textbf{wheels}''. \textbf{PyPI} jako indeks paczek pozwala użytkownikowi na wyszukiwanie paczek za pomocą konkretnych słów lub filtrów, przeszukując metadane paczek, takie jak licencje czy kompatybilność ze standardem \textbf{POSIX}. Pojedyncza paczka na \textbf{PyPI} może posiadać, pomijając metadane, poprzednie wersje paczki, pre-kompilowane \textbf{wheel}'e (na przykład zawierające \textbf{DLL}'e na system Windows), lub innych form przewidzianych na inne systemy operacyjne i wersje \textbf{Python}'a.
+\textbf{PyPI}, \cite{PyPI} \cite{AdvancedPythonDevelopment} czyli \textbf{Python Package Index} jest oficjalnym repozytorium, dla języka \textbf{Python} przeznaczonym na third-party paczki przeznaczone, dla języka, które może zainstalować każdy użytkownik. \textbf{PyPI} jest operowany przez \textbf{Python Software Foundation}, która jest non-profit organizacją odpowiedzialną za utrzymywanie języka \textbf{Python} i jego  środowiska. Niektóre menadżery paczek takie jak \textbf{pip} \cite{Pip} używają \textbf{PyPI} jako domyślnego źródła paczek i ich zależności. Na dzień 30 października 2021 roku, ponad $336 \ 000$ \textbf{Python}'owych paczek może zostać w ten sposób zainstalowane. \textbf{PyPI} głównie hostuje \textbf{Python}'owe paczki w formie nazywanej ``\textbf{sdists}'', czyli z \textit{ang. ``\textbf{source distributions}''}, lub w formie pre-kompilowanej tak zwanej ``\textbf{wheels}''. \textbf{PyPI} jako indeks paczek pozwala użytkownikowi na wyszukiwanie paczek za pomocą konkretnych słów lub filtrów, przeszukując metadane paczek, takie jak licencje czy kompatybilność ze standardem \textbf{POSIX}. Pojedyncza paczka na \textbf{PyPI} może posiadać, pomijając metadane, poprzednie wersje paczki, pre-kompilowane \textbf{wheel}'e (na przykład zawierające \textbf{DLL}'e na system Windows), lub wiele innych form przewidzianych na inne systemy operacyjne i wersje \textbf{Python}'a.
 
 \textbf{Python Distribution Utilities}, czyli w skrócie nazywane ``\textbf{distutils}'', to moduł dodany do \textbf{Python}'a, we wrześniu roku 2000, jako część standardowej biblioteki języka w wersji \lcode{1.6.1}, 9 lat po wyjściu pierwszej oficjalnej wersji \textbf{Python}'a, mając na celu uproszczenie instalacji third-party paczek.
 Jednakże, \textbf{distutils} dawało jedynie narzędzie służące do tworzenia paczek, dla kodu napisanego w \textbf{Python}'ie, i nic więcej. Umiało zebrać, i dystrybuować metadane paczki, ale nie używało ich w żaden inny sposób. \textbf{Python} ciągle potrzebował scentralizowanego katalogu paczek znajdującego się w internecie. \textbf{PEP 241} \cite{PEP241} zaproponował standaryzacje indeksów, która została sfinalizowana w marcu 2001 roku.
@@ -117,7 +117,15 @@ Następnie widzimy folder \lcode{sgai}, który jest miejscem na kod źródłowy.
 
 \clearpage
 
-Tak prezentuje się struktura projektu po dodaniu odpowiednich plików kodu źródłowego:
+Tak prezentuje się struktura projektu po dodaniu odpowiednich plików kodu źródłowego, gdzie najważniejsze to:
+
+\begin{itemize}
+    \item \lcode{agent.py} - tworzy i reguluje parametry sieci neuronowej
+    \item \lcode{config.py} - posiada konfiguracje parametrów procesu nauki sieci neuronowej takie jak \lcode{LEARNING_RATE}
+    \item \lcode{data_helper.py} - funkcje odpowiedzialne za rysowanie wykresów wizualizujących postępy nauki sieci neuronowej
+    \item \lcode{model.py} - posiada model sieci neuronowej i jej mechanizmy nauki
+    \item \lcode{trainer.py} - definiuje interfejs klasy abstrakcyjnej za pomocą, której użytkownik paczki łączy grę z treningiem sieci neuronowej
+\end{itemize}
 
 \begin{onepage}
     \begin{lstlisting}[
