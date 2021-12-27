@@ -9,7 +9,7 @@ Jednakże, \textbf{distutils} dawało jedynie narzędzie służące do tworzenia
 \clearpage
 
 \section{Cookiecutter}
-\textbf{Cookiecutter} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych \textbf{cookiecutters}, czyli gotowych szablonów, za pomocą, których \textbf{Cookiecutter} umie stworzyć szablon paczki.
+\textbf{Cookiecutter} \cite{CookieCutterDocumentation} \cite{CookiecutterGitHub} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych \textbf{cookiecutters}, czyli gotowych szablonów, za pomocą, których \textbf{Cookiecutter} umie stworzyć szablon paczki.
 
 W tym celu użyty jest system templatowanie \textbf{Jinja2}, która potrafi inteligentnie zastąpić imiona i strukturę folderów oraz plików i ich zawartości. Co bardzo dobrze pokazuje poniżej zamieszczony przykład:
 
@@ -111,7 +111,7 @@ $ tree
 \end{onepage}
 
 
-Widzimy, że \textbf{Cookiecutter} stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku \textbf{Markdown}, plik \lcode{LICENSE} opisujący licencję \textbf{MIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}, plik konfiguracyjny \lcode{mkdocs.yml} odpowiadający za konfiguracje dokumentacji \textbf{Markdown}, plik \lcode{README.md} opisujący podstawowe informacje apropos paczki, \lcode{requirements.txt}, który wskazuje \textbf{pip}'owi wymagane zależności wymagane, dla poprawnego działania paczki, \lcode{requirements_dev.txt}, czyli wymagane zależności do pracy nad paczką, takie jak formater kodu \lcode{black}, lub \lcode{pytest} służący do automatyzowania testów, \lcode{setup.cfg}, który funkcjonuje jako plik konfiguracyjny, dla \lcode{setup.py}.
+Widzimy, że \textbf{Cookiecutter} stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku \textbf{Markdown}, plik \lcode{LICENSE} opisujący licencję \textbf{MIT} \cite{LicencjaMIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}, plik konfiguracyjny \lcode{mkdocs.yml} odpowiadający za konfiguracje dokumentacji \textbf{Markdown}, plik \lcode{README.md} opisujący podstawowe informacje apropos paczki, \lcode{requirements.txt}, który wskazuje \textbf{pip}'owi wymagane zależności wymagane, dla poprawnego działania paczki, \lcode{requirements_dev.txt}, czyli wymagane zależności do pracy nad paczką, takie jak formater kodu \lcode{black}, lub \lcode{pytest} służący do automatyzowania testów, \lcode{setup.cfg}, który funkcjonuje jako plik konfiguracyjny, dla \lcode{setup.py}.
 Następnie widzimy folder \lcode{sgai}, który jest miejscem na kod źródłowy.
 
 
