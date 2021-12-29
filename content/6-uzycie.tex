@@ -4,8 +4,8 @@
 \section{Gra Snake}
 
 Snake \cite{SnakeGame} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty losowo porozmieszczane po mapie. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
-Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku Python, przy użyciu paczki PyGame, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
-Wąż został przestawiony w postaci linii składającej się z pojedynczych zielonych kwadratów. Wąż zaczyna z trzema zielonymi kwadratami, każdy dodatkowo zdobyty punkt podłuża węża o jeden kwadrat. Punkty możliwe do zdobycia są reprezentowany w postaci czerwonych kwadratów.
+Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku Python \ref{section:python}, przy użyciu paczki PyGame \ref{section:pygame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji, oraz samej rozgrywki.
+Wąż został przestawiony w postaci linii składającej się z pojedynczych zielonych kwadratów. Wąż zaczyna z trzema zielonymi kwadratami, każdy dodatkowo zdobyty punkt podłuża węża o jeden kwadrat. Punkty możliwe do zdobycia są reprezentowany w postaci czerwonych kwadratów \ref{img:snake_game}.
 
 \begin{figure}[h!]
     \centering
@@ -18,13 +18,13 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
 \section{Implementacja gry}
 
 
-Na początku zaimportowane zostają moduły potrzebne do uruchomienia gry i do jej wewnętrznych procesów:
+Na początku zaimportowane zostają moduły potrzebne \ref{code:importsznejk} do uruchomienia gry i do jej wewnętrznych procesów.
 
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Importowanie modułów do gry Snake},
+        label=code:importsznejk,
         language={Python},
         numbers=none,
         ]
@@ -39,13 +39,13 @@ Na początku zaimportowane zostają moduły potrzebne do uruchomienia gry i do j
 
 
 
-Stworzenie pomocniczych klas służących jako enumeratory na kolory i kierunki:
+Stworzenie pomocniczych klas \ref{code:help_class} służących jako enumeratory na kolory i kierunki.
 
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Pomocnicze enumeratory gry Snake},
+        label=code:help_class,
         language={Python},
         numbers=none,
         ]
@@ -68,12 +68,12 @@ Stworzenie pomocniczych klas służących jako enumeratory na kolory i kierunki:
 
 \clearpage
 
-Klasa tworząca abstrakcję punktu na mapie powstałego z pikseli:
+Klasa tworząca abstrakcję punktu na mapie powstałego z pikseli \ref{code:gamepoint}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Klasa odpowiadająca za punkty na mapie},
+        label=code:gamepoint,
         language={Python},
         numbers=none,
         ]
@@ -108,12 +108,12 @@ Klasa tworząca abstrakcję punktu na mapie powstałego z pikseli:
     \end{lstlisting}
 \end{onepage}
 
-Definicja głównej klasy odpowiedzialnej za mechanikę gry. W jej konstruktorze zainicjalizowane zostaje okno graficzne służące wizualizacji gry:
+Definicja głównej klasy odpowiedzialnej za mechanikę gry. W jej konstruktorze zainicjalizowane zostaje okno graficzne służące wizualizacji gry \ref{code:examplesnake}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Klasa implementują mechanikę gry Snake},
+        label=code:examplesnake,
         language={Python},
         numbers=none,
         ]
@@ -125,18 +125,17 @@ Definicja głównej klasy odpowiedzialnej za mechanikę gry. W jej konstruktorze
             pygame.display.set_caption("Snake")
             self.clock = pygame.time.Clock()
             self.reset_game_state()
-    
     \end{lstlisting}
 \end{onepage}
 
 \clearpage
 
-Funkcja odpowiadająca za resetowanie gry:
+Funkcja odpowiadająca za resetowanie gry \ref{code:gamereset}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja resetująca rozgrywke},
+        label=code:gamereset,
         language={Python},
         numbers=none,
         ]
@@ -161,12 +160,12 @@ Funkcja odpowiadająca za resetowanie gry:
 \end{onepage}
 
 
-Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, dla węża na mapie:
+Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, dla węża na mapie \ref{code:losulosu}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja umieszająca jedzenie na mapie},
+        label=code:losulosu,
         language={Python},
         numbers=none,
         ]
@@ -181,12 +180,12 @@ Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, d
 
 \clearpage
 
-Funkcja \lcode{play_step} jest odpowiedzialna za każdą klatkę rozgrywki, na początku sprawdza czy użytkownik sie chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia styację rozgrywki, i decyduje o tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
+Funkcja \lcode{play_step()} jest odpowiedzialna za każdą klatkę rozgrywki \ref{code:playsteppu}, na początku sprawdza czy użytkownik się chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia sytuację rozgrywki, i decyduje o tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja implementacja mechanikę rozgrywki klatka po klatce},
+        label=code:playsteppu,
         language={Python},
         numbers=none,
         ]
@@ -228,13 +227,13 @@ Funkcja \lcode{play_step} jest odpowiedzialna za każdą klatkę rozgrywki, na p
 
 \clearpage
 
-Pomocnicza funkcja, której zadaniem jest wykrycie kolizji obiektów:
+Pomocnicza funkcja, której zadaniem jest wykrycie kolizji obiektów \ref{code:is_collision}.
 
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja sprawdzająca kolizje},
+        label=code:is_collision,
         language={Python},
         numbers=none,
         ]
@@ -257,12 +256,12 @@ Pomocnicza funkcja, której zadaniem jest wykrycie kolizji obiektów:
     \end{lstlisting}
 \end{onepage}
 
-Pomocnicza prywatna funkcja odpowiedzialna za aktualizację interfejsu graficznego:
+Pomocnicza prywatna funkcja odpowiedzialna za aktualizację interfejsu graficznego \ref{code:_update_ui}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja uaktualniająca interfejs},
+        label=code:_update_ui,
         language={Python},
         numbers=none,
         ]
@@ -293,12 +292,12 @@ Pomocnicza prywatna funkcja odpowiedzialna za aktualizację interfejsu graficzne
 
 \clearpage
 
-Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża:
+Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża \ref{code:_move}.
 
 \begin{onepage}
     \begin{lstlisting}[
-        caption={},
-        label=code:,
+        caption={Funkcja poruszającą wężem},
+        label=code:_move,
         language={Python},
         numbers=none,
         ]
@@ -341,7 +340,7 @@ Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji wę�
 
 \section{Przykład użycia}
 
-Większość mechaniki gry została zaimplementowana w klasie \lcode{ExampleSnakeGame}, która odpowiada za mechanikę gry oraz przechowywanie jej stanu. Znajdują się w niej między innymi mechaniki odpowiedzialne za wykrywanie zderzeń, poruszanie się węża, sterowanie wężem, czy losowanie miejsca pojawienia się następnych punktów. Dodatkowo zaimplementowane zostały klasy enumeratorowe, takie jak \lcode{GameDirection} i \lcode{GamePointOnTheMap} w celu zwiększenia czytelności kodu:
+Większość mechaniki gry została zaimplementowana w klasie \lcode{ExampleSnakeGame} \ref{code:examplesnake}, która odpowiada za mechanikę gry oraz przechowywanie jej stanu. Znajdują się w niej między innymi mechaniki odpowiedzialne za wykrywanie zderzeń, poruszanie się węża, sterowanie wężem, czy losowanie miejsca pojawienia się następnych punktów. Dodatkowo zaimplementowane zostały klasy enumeratorowe, takie jak \lcode{GameDirection} \ref{code:help_class} i \lcode{GamePointOnTheMap} \ref{code:gamepoint} w celu zwiększenia czytelności kodu \ref{code:import_snake}.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -360,7 +359,7 @@ Większość mechaniki gry została zaimplementowana w klasie \lcode{ExampleSnak
 
 
 
-Następnie definiujemy potrzebny interfejs \lcode{Trainer}, aby paczka \lcode{sgai} umiała się komunikować z grą. Zaczynami od definicji klasy i jej konstruktora. W tym przykładzie wielkość warstwy ukrytej pozostawiamy nie zmienioną ponieważ podstawowa w pełni wystarczy do poziomu skomplikowania przygotowanej gry:
+Następnie definiujemy potrzebny interfejs \lcode{Trainer} \ref{code:class_trainer}, aby paczka \lcode{sgai} umiała się komunikować z grą. Zaczynami od definicji klasy i jej konstruktora. W tym przykładzie wielkość warstwy ukrytej pozostawiamy nie zmienioną ponieważ podstawowa w pełni wystarczy do poziomu skomplikowania przygotowanej gry \ref{code:definition_my_trainer}.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -370,12 +369,12 @@ Następnie definiujemy potrzebny interfejs \lcode{Trainer}, aby paczka \lcode{sg
     numbers=none
 ]
 class MyTrainer(Trainer):
-    def __init__(self, game, input_size: int, output_size: int):
-        super().__init__(game, input_size, output_size)
+    def __init__(self, game, input_size: int, output_size: int, hidden_size: int):
+        super().__init__(game, input_size=input_size, output_size=output_size, hidden_size=hidden_size)
     \end{lstlisting}
 \end{onepage}
 
-Następnie definiujemy dwie funkcje \lcode{get_state()}, oraz \lcode{perform_action()}. Są one interfejsem pomiędzy paczką \lcode{sgai}, a kodem gry, dlatego to użytkownik paczki musi je zaimplementować, ponieważ paczka nie ma możliwości posiadania wiedzy na temat własności działania kodu gry na, której będzie szkolić sieć neuronową. Na samym początku definiujemy stan gry, pobierając konkretne elementy rozgrywki takie jak pozycja węża, pozycja nagrody itp.:
+Następnie definiujemy dwie funkcje \lcode{get_state()} \ref{code:definition_get_state}, oraz \lcode{perform_action()} \ref{code:definition_perform_action}. Są one interfejsem pomiędzy paczką \lcode{sgai}, a kodem gry, dlatego to użytkownik paczki musi je zaimplementować, ponieważ paczka nie ma możliwości posiadania wiedzy na temat własności działania kodu gry na, której będzie szkolić sieć neuronową. Na samym początku definiujemy stan gry, pobierając konkretne elementy rozgrywki takie jak pozycja węża, pozycja nagrody itp..
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -398,7 +397,7 @@ Następnie definiujemy dwie funkcje \lcode{get_state()}, oraz \lcode{perform_act
     \end{lstlisting}
 \end{onepage}
 
-W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących stan gry, które następnie zostaną przekazane sieci neuronowej jako wejście. Gdzie każda z wartości może być jedynie $0$, lub $1$, $0$ oznaczające \lcode{False}, a $1$ \lcode{True}:
+W tym przykładzie zebranych będzie łącznie $11$ parametrów \ref{code:return_state} opisujących stan gry, które następnie zostaną przekazane sieci neuronowej jako wejście. Gdzie każda z wartości może być jedynie $0$, lub $1$, $0$ oznaczające \lcode{False}, a $1$ \lcode{True}.
 
 \begin{itemize}
     \item Czy jakieś niebezpieczeństwo znajduje się naprzeciwko?
@@ -456,7 +455,7 @@ return np.array(state, dtype=int)
 
 \clearpage
 
-Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan oraz wynik gry (które są wynikiem podjętej przez nas akcji), zaimplementowanie funkcji \lcode{perform_action()} jest bardzo proste:
+Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan oraz wynik gry (które są wynikiem podjętej przez nas akcji), zaimplementowanie funkcji \lcode{perform_action()} jest bardzo proste.
 
 
 \begin{onepage}
@@ -473,23 +472,24 @@ Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan
 \end{onepage}
 
 
-Tworzymy obiekt klasy \lcode{MyTrainer}, definiujemy jego parametry i uruchamiamy trening sieci neuronowej:
+Tworzymy obiekt klasy \lcode{MyTrainer} \ref{code:mytrainer}, definiujemy jego parametry i uruchamiamy trening sieci neuronowej.
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={},
-    label=code:,
+    caption={Implementacja klasy Trainer},
+    label=code:mytrainer,
     language={Python},
     numbers=none
 ]
 if __name__ == "__main__":
-    mt = MyTrainer(game=ExampleSnakeGame(), input_size=11, output_size=3)
+    mt = MyTrainer(
+        game=ExampleSnakeGame(), input_size=11, output_size=3, hidden_size=256
+    )
     mt.train(model_file="model.pth")
-
 \end{lstlisting}
 \end{onepage}
 
-Jak widać na poniższym wykresie w okolicach setnej rozgrywki, sieć neuronowa znacznie się poprawia. Następnie przez kolejne kilkaset gier widoczny jest jedynie marginalny postęp, przez to można stwierdzić że nastąpiło nasycenie spowodowane prostą budową sieci.
+Jak widać na poniższym wykresie \ref{img:ai_graph} w okolicach setnej rozgrywki, sieć neuronowa znacznie się poprawia. Następnie przez kolejne kilkaset gier widoczny jest jedynie marginalny postęp, przez to można stwierdzić że nastąpiło nasycenie spowodowane prostą budową sieci.
 
 \begin{figure}[h]
     \centering

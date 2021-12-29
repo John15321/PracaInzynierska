@@ -1,7 +1,7 @@
 \section{Sieć neuronowa}
 
 Sieć neuronowa \cite{NeuralNetwork} \cite{ArtificialNeuralNetwork} \cite{DeepLearningFromScratch} \cite{HandsOnMachineLearning} jest siecią bądź układem neuronów, w nowoczesnym zrozumieniu pojęcie jest stosowane głównie w odniesieniu do sztucznych sieci neuronowych , które składają się ze sztucznych komputerowo symulowanych, uproszczonych modeli neuronów. Sztuczne sieci neuronowe są inspirowane przez biologiczne sieci neuronowe, które tworzą mózgi zwierząt.
-Każde połączenie, czyli inaczej każda synapsa w biologicznej sieci neuronowej może transmitować sygnał do innych neuronów. Sztuczny neuron otrzymuje sygnał, następnie przetwarza go i może zasygnalizować inne połączone z nim neurony. Sam sygnał jest liczbą rzeczywistą, wyjście każdego neuronu obliczane za pomocą jakiejś nie liniowej sumy wejścia. Połączenia neuronów posiadają wagę, która jest dopasowywana podczas procesu uczenia. Waga danego połączenia zwiększa lub pomniejsza siłę sygnału w danym połączeniu. Neurony mogą posiadać granice wartości takiego sygnału, taką, że dany sygnał zostanie przepuszczony jeśli zsumowany sygnał przekracza jakąś wartość. Zazwyczaj neurony są agregowane w tak zwane warstwy. Różne warstwy mogą powodować różne transformacje sygnału bazując na ich wejściach. Sygnał podróżuje od warstwy wejściowej, do ostatniej warstwy, która jest warstwą wejściową, zwykle po przejściu kilku wewnętrznych warstw.
+Każde połączenie, czyli inaczej każda synapsa w biologicznej sieci neuronowej może transmitować sygnał do innych neuronów. Sztuczny neuron otrzymuje sygnał, następnie przetwarza go i może zasygnalizować inne połączone z nim neurony. Sam sygnał jest liczbą rzeczywistą, wyjście każdego neuronu obliczane za pomocą jakiejś nie liniowej sumy wejścia. Połączenia neuronów posiadają wagę, która jest dopasowywana podczas procesu uczenia. Waga danego połączenia zwiększa lub pomniejsza siłę sygnału w danym połączeniu. Neurony mogą posiadać granice wartości takiego sygnału, taką, że dany sygnał zostanie przepuszczony jeśli zsumowany sygnał przekracza jakąś wartość. Zazwyczaj neurony są agregowane w tak zwane warstwy. Różne warstwy mogą powodować różne transformacje sygnału bazując na ich wejściach. Sygnał podróżuje od warstwy wejściowej, do ostatniej warstwy, która jest warstwą wejściową, zwykle po przejściu kilku wewnętrznych warstw. Poniższy rysunek przedstawia symboliczny graf sieci neuronowej \ref{img:nn_symbolic_diagram}.
 
 
 \begin{figure}[h]
@@ -15,7 +15,7 @@ Każde połączenie, czyli inaczej każda synapsa w biologicznej sieci neuronowe
 \clearpage
 
 
-W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez stworzenie stworzenie obliczeniowego modelu sieci neuronowej. W późnych latach 40, dwudziestego wieku, D. O. Hebb stworzył hipotezę bazującą na mechanizmie neuroplastyczności \cite{Neuroplastycznosc}, czyli zdolności tkanki nerwowej do tworzenia nowych połączeń mających na celu jej reorganizację, adaptację lub zmianę. Jest to powszechna cecha neuronów, która występuje na każdym poziomie układu nerwowego. Teoria Hebbiana postuluje zwiększenie wydajności synaps na skutek ciągłej stymulacji. W roku 1945 Farley i Wesley A. Clark jako pierwsi użyli maszyny obliczeniowej (wtedy nazywanej jeszcze "kalkulatorami"), do symulacji sieci neuronów Hebbiana. Pierwsze funkcjonalne sieci neuronowe z wieloma warstwami zostały opublikowane przez Ivakhnenko i Lape w roku 1965. A podstawy algorytmu propagacji wstecznej (z ang. backpropagation).
+W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez stworzenie stworzenie obliczeniowego modelu sieci neuronowej. W późnych latach 40, dwudziestego wieku, D. O. Hebb stworzył hipotezę bazującą na mechanizmie neuroplastyczności \cite{Neuroplastycznosc}, czyli zdolności tkanki nerwowej do tworzenia nowych połączeń mających na celu jej reorganizację, adaptację lub zmianę. Jest to powszechna cecha neuronów, która występuje na każdym poziomie układu nerwowego. Teoria Hebbiana postuluje zwiększenie wydajności synaps na skutek ciągłej stymulacji. W roku 1945 Farley i Wesley A. Clark jako pierwsi użyli maszyny obliczeniowej (wtedy nazywanej jeszcze "kalkulatorami"), do symulacji sieci neuronów Hebbiana. Pierwsze funkcjonalne sieci neuronowe z wieloma warstwami zostały opublikowane przez Ivakhnenko i Lape w roku 1965. A podstawy algorytmu propagacji wstecznej (z ang. backpropagation) w roku 1960 przez Kelly'iego, oraz Bryson'a w 1961.
 
 W uczeniu maszynowym propagacja wsteczna \cite{Backpropagation} jest szeroko używanym algorytmem służącym do trenowania sieci neuronowych. Przy szkoleniu sieci neuronowej propagacja wsteczna oblicza gradient funkcji błędu względem wagi sieci, dla konkretnego wejścia/wyjścia, i robi to efektywnie pod względem obliczeniowym w przeciwieństwie do naiwnych metod obliczeniowych obliczania gradientu względem każdej wagi indywidualnie. Efektywność sprawia, że możliwe jest użycie metod gradientowych do trenowania sieci wielowarstwowych, uaktualniania wag, aby zminimalizować funkcję błędu. Metoda gradientu prostego, lub jego różne warianty takie jak metoda gradientu stochastycznego są bardzo często używane. Algorytm propagacji wstecznej działa na zasadzie obliczania gradientu funkcji błędu każdej z wagi korzystając z reguły łańcuchowej, obliczając gradient każdej warstwy po kolei, iterując w tył od ostatniej warstwy, aby uniknąć powtarzających się obliczeń, co między innymi jest przykładem programowania dynamicznego.
 
@@ -30,7 +30,7 @@ Sztuczna sieć neuronowa składa się z kolekcji symulowanych neuronów. Każdy 
 Uczenie przez wzmacnianie (ang. reinforcement learning, RL) \cite{ReinforcementLearning} \cite{ReinforcementLearningBook} \cite{{DeepReinforcementLearning}} jest jednym z typów uczenia maszynowego, które koncentruje się na inteligentnych agentach, które dokonują akcji w danych środowiskach tak, aby zmaksymalizować kumulacyjną nagrodę. Reinforcement learning jest jednym z trzech podstawowych paradygmatów uczenia maszynowego, obok uczenia nadzorowanego (Supervised Learning), oraz uczenia nienadzorowanego (Unsupervised Learning).
 
 Reinforcement learning różni się od uczenia nadzorowanego tym, że nie potrzebuje poukładanego, oznakowanego zestawu danych wejść i wyjść, które mają zostać zaprezentowane sieci. Dodatkowo sub-optymalne zachowania i rozwiązania sieci nie wymagają korekcji. Zamiast tego trening sieci skupia się na balansie pomiędzy eksploracją nowych zachowań, oraz eksploatacją już istniejących umiejętności.
-Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób, gdzie to agent umieszczony w danym środowisku sczytuje jego stan. Stan środowiska jest wejściem sieci neuronowej. Następnie na podstawie danego stanu podejmuje decyzję, która jest wskazana przez wyjście sieci neuronowej. Podjęta decyzja wpływa na środowisko, następnie na podstawie rezultatu uzyskanego poprzez daną akcję dokonywana jest poprawa wag połączeń sieci. Poniższy diagram przedstawia uproszczony schemat tego działania, biorąc za środowisko grę komputerową:
+Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób, gdzie to agent umieszczony w danym środowisku sczytuje jego stan. Stan środowiska jest wejściem sieci neuronowej. Następnie na podstawie danego stanu podejmuje decyzję, która jest wskazana przez wyjście sieci neuronowej. Podjęta decyzja wpływa na środowisko, następnie na podstawie rezultatu uzyskanego poprzez daną akcję dokonywana jest poprawa wag połączeń sieci. Poniższy diagram \ref{img:rf_learning_diagram} przedstawia uproszczony schemat tego działania, biorąc za środowisko grę komputerową.
 
 \begin{figure}[h]
     \centering
@@ -57,7 +57,7 @@ Implementacja Q-learningu zakłada następującą procedurę:
 
 W pierwszym kroku inicjalizujemy wartość Q, poprzez inicjalizację naszego modelu losowymi parametrami. Następnie w drugim kroku wybieramy akcję, którą ma wykonać nasz agent. Akcja jest wybierana na podstawie predykcji modelu wykonując metodę \lcode{model.predict(state)}, dodatkowo co jakiś arbitralny procent ruchów decydujemy się na losowy ruch w celu umożliwienia modelowi eksploracji innych możliwości niż te już potencjalnie wyuczone, co jest głównie przydatne na początku nauki modelu, kiedy nie ma on doświadczenia ze środowiskiem. Kolejnym krokiem jest wykonanie danej akcji na środowisku i zmierzenie nagrody, która została spowodowana danym ruchem, dzięki tej zmierzonej wartości możliwe jest dokonanie aktualizacji wartości Q, która jest obiektywnym miernikiem jakości akcji, dzięki czemu możliwe jest trenowanie neuronów na danej akcji.
 
-Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellman'a \cite{BellmanEquation}, gdzie nowa wartość Q jest obliczana z sumy starej wartości Q z współczynnikiem uczenia pomnożonym przez sumę nagrody za dokonaną akcję, wraz z maksymalną spodziewaną przyszłościową wartością Q biorąc pod uwagę nowy stan przemnożoną przez discount-rate minus obecna wartość Q:
+Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellman'a \ref{img:bellman_eq} \cite{BellmanEquation}, gdzie nowa wartość Q jest obliczana z sumy starej wartości Q z współczynnikiem uczenia pomnożonym przez sumę nagrody za dokonaną akcję, wraz z maksymalną spodziewaną przyszłościową wartością Q biorąc pod uwagę nowy stan przemnożoną przez discount-rate minus obecna wartość Q.
 
 
 \begin{figure}[h]
@@ -67,17 +67,18 @@ Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellma
     \label{img:bellman_eq}
 \end{figure}
 
-Dzięki równaniu Bellman'a możliwe jest skonstruowanie nowej funkcji błędu średniokwadratowego \cite{BladSredniokwadratowy} opartego o wartość Q:
+Dzięki równaniu Bellman'a możliwe jest skonstruowanie nowej funkcji błędu średniokwadratowego \cite{BladSredniokwadratowy} opartego o wartość Q \ref{eq:q_error}.
 
-$$
+\begin{equation}
     Błąd = (Q_{nowe} - Q)^{2}
-$$
+    \label{eq:q_error}
+\end{equation}
 
 \clearpage
 
 \section{Implementacja}
 
-Import potrzebnych bibliotek takich jak NumPy \ref{section:numpy}, PyTorch \ref{section:pytorch}, Matplotlib \ref{section:matplotlib}:
+Import potrzebnych bibliotek \ref{code:imports} takich jak NumPy \ref{section:numpy}, PyTorch \ref{section:pytorch}, Matplotlib \ref{section:matplotlib}:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -103,7 +104,7 @@ from IPython import display
     \end{lstlisting}
 \end{onepage}
 
-Na początku definiowane jest kilka podstawowych parametrów takich jak maksymalna liczba trzymanych obiektów w pamięci, batch-size \cite{BatchNormalization} (czyli liczbę egzemplarzy treningowych na których będzie szkolona sieć naraz), oraz współczynnik uczenia, czyli parametr wiążący funkcję błędu ze zmianą wag:
+Na początku definiowane jest kilka podstawowych parametrów \ref{code:agent_class_definition} takich jak maksymalna liczba trzymanych obiektów w pamięci, batch-size \cite{BatchNormalization} (czyli liczbę egzemplarzy treningowych na których będzie szkolona sieć naraz), oraz współczynnik uczenia, czyli parametr wiążący funkcję błędu ze zmianą wag.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -119,7 +120,7 @@ LEARNING_RATE = 0.001
 \end{onepage}
 
 
-Kolejnym krokiem jest definicja klasy \lcode{Agent}, która definiuje parametry takie jak rozmiar warstw wejściowych, wewnętrznych/ukrytych, oraz wyjściowych sieci neuronowej, współczynnik $\varepsilon$ kontrolujący losowość akcji agenta, oraz współczynnik gamma, inaczej zwany jako discount-rate. Dodatkowo tworzymy model sieci neuronowej \lcode{self.model} korzystając z klasy \lcode{LinearQNet} z biblioteki PyTorch, oraz \lcode{self.trainer}, który jest obiektem odpowiedzialnym za trening sieci neuronowej, zgodnie z podanymi parametrami:
+Kolejnym krokiem jest definicja klasy \lcode{Agent} \ref{code:agent_class_definition}, która definiuje parametry takie jak rozmiar warstw wejściowych, wewnętrznych/ukrytych, oraz wyjściowych sieci neuronowej, współczynnik $\varepsilon$ kontrolujący losowość akcji agenta, oraz współczynnik gamma, inaczej zwany jako discount-rate. Dodatkowo tworzymy model sieci neuronowej \lcode{self.model} korzystając z klasy \lcode{LinearQNet} z biblioteki PyTorch, oraz \lcode{self.trainer}, który jest obiektem odpowiedzialnym za trening sieci neuronowej, zgodnie z podanymi parametrami.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -148,13 +149,13 @@ class Agent:
     \end{lstlisting}
 \end{onepage}
 
-Utworzona klasa posiada metodę \lcode{remember()}, służącą do dodania stanu, akcji, nagrody, stanu będącego rezultatem akcji, oraz stanu gry, do specjalnej listy, która je zachowuje w celu przeprowadzenia treningu sieci neuronowej:
+Utworzona klasa posiada metodę \lcode{remember()} \ref{code:remember_method}, służącą do dodania stanu, akcji, nagrody, stanu będącego rezultatem akcji, oraz stanu gry, do specjalnej listy, która je zachowuje w celu przeprowadzenia treningu sieci neuronowej.
 
 
 \begin{onepage}
     \begin{lstlisting}[
     caption={Definicja metody \lcode{remember}},
-    label=coderemember_method:,
+    label=code:remember_method,
     language={Python},
     numbers=none
 ]
@@ -163,12 +164,12 @@ def remember(self, state, action, reward, next_state, game_state):
     \end{lstlisting}
 \end{onepage}
 
-Metoda \lcode{get_action()} zwraca podjętą akcję przez model. Z uwagi na balans pomiędzy eksploracją, a eksploatacją w uczeniu wzmacnianym we wczesnych fazach gry implementujemy możliwość losowych ruchów tak, aby agent miał możliwość eksploracji:
+Metoda \lcode{get_action()} \ref{code:get_action_method} zwraca podjętą akcję przez model. Z uwagi na balans pomiędzy eksploracją, a eksploatacją w uczeniu wzmacnianym we wczesnych fazach gry implementujemy możliwość losowych ruchów tak, aby agent miał możliwość eksploracji.
 
 \begin{onepage}
     \begin{lstlisting}[
     caption={Definicja metody \lcode{get_action}},
-    label=code:get_action_method:,
+    label=code:get_action_method,
     language={Python},
     numbers=none
 ]
@@ -192,7 +193,7 @@ def get_action(self, state):
 
 
 Następnie definiowane są metody nauki krótko pamięciowej, długo pamięciowej, które wzywają metodę \lcode{self.trainer.train_step()} klasy \lcode{QTrainer}.
-Metoda \lcode{self.train_long_memory()} jest odpowiedzialna za trenowanie sieci neuronowej na batch'u wyników gry po jej zakończeniu. W ten sposób tworzona jest długoterminowa pamięć agenta, która jest w stanie uczyć się z błędów oraz sukcesów całej rozgrywki:
+Metoda \lcode{self.train_long_memory()} \ref{code:long_memory} jest odpowiedzialna za trenowanie sieci neuronowej na batch'u wyników gry po jej zakończeniu. W ten sposób tworzona jest długoterminowa pamięć agenta, która jest w stanie uczyć się z błędów oraz sukcesów całej rozgrywki.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -214,7 +215,7 @@ def train_long_memory(self):
 
 
 
-Metoda \lcode{self.train_short_memory()} jest odpowiedzialna za trenowanie sieci neuronowej przy każdym ruchu w grze, dzięki czemu tworzona jest pamięć krótkoterminowa i agent jest w stanie uczyć się na świeżo popełnionych błędach, oraz sukcesach w rozgrywce:
+Metoda \lcode{self.train_short_memory()} \ref{code:short_memory} jest odpowiedzialna za trenowanie sieci neuronowej przy każdym ruchu w grze, dzięki czemu tworzona jest pamięć krótkoterminowa i agent jest w stanie uczyć się na świeżo popełnionych błędach, oraz sukcesach w rozgrywce.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -229,7 +230,7 @@ def train_short_memory(self, state, action, reward, next_state, game_state):
     \end{lstlisting}
 \end{onepage}
 
-Klasa \lcode{QTrainer} jest odpowiedzialna za trenowanie sieci neuronowej używając wskazanych parametrów takich jak współczynnik nauczania (learning rate), czy współczynnik gamma:
+Klasa \lcode{QTrainer} \ref{code:qtrainer_imt} jest odpowiedzialna za trenowanie sieci neuronowej używając wskazanych parametrów takich jak współczynnik nauczania (learning rate), czy współczynnik gamma.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -249,11 +250,11 @@ class QTrainer:
 \end{onepage}
 
 
-Adam (\lcode{optim.Adam()}) \cite{AdamOpt1} \cite{AdamOpt2} jest algorytmem optymalizacyjnym, które jest rozwinięciem metody gradientu prostego, która została niedawno szeroko zaadaptowana, dla algorytmów trenowania sztucznej inteligencji. Jako funkcję błędu ustawiony zostaje błąd średniokwadratowy z biblioteki PyTorch \lcode{nn.MSELoss()}
+Adam (\lcode{optim.Adam()}) \cite{AdamOpt1} \cite{AdamOpt2} jest algorytmem optymalizacyjnym, które jest rozwinięciem metody gradientu prostego, która została niedawno szeroko zaadaptowana, dla algorytmów trenowania sztucznej inteligencji. Jako funkcję błędu ustawiony zostaje błąd średniokwadratowy z biblioteki PyTorch \lcode{nn.MSELoss()}.
 
 \clearpage
 
-Metoda \lcode{self.trainer.train_step()} jest zaimplementowana wewnątrz klasy \lcode{QTrainer}, odpowiada ona za przeprowadzenie każdego kroku nauki sieci neuronowej. Konwertujemy zmienne reprezentujące stan, nowy stan po akcji agenta, akcje, oraz nagrodę do typów tensora z biblioteki PyTorch. Z uwagi na możliwość przekazania parametrów do nauki w formie batch'a, odpowiednik warunek konwertuje je na poprawne tensory. Kolejnym krokiem jest pozyskanie wartości parametru Q, poprzez predykcję modelu dzięki czemu jesteśmy w stanie zaktualizować wartość parametru Q, następnie przechodzimy do faktycznego treningu naszego modelu. Za pomocą metod biblioteki PyTorch obliczamy gradient, funkcję błędu, i propagację wsteczną, dla modelu:
+Metoda \lcode{self.trainer.train_step()} \ref{code:train_step} jest zaimplementowana wewnątrz klasy \lcode{QTrainer}, odpowiada ona za przeprowadzenie każdego kroku nauki sieci neuronowej. Konwertujemy zmienne reprezentujące stan, nowy stan po akcji agenta, akcje, oraz nagrodę do typów tensora z biblioteki PyTorch. Z uwagi na możliwość przekazania parametrów do nauki w formie batch'a, odpowiednik warunek konwertuje je na poprawne tensory. Kolejnym krokiem jest pozyskanie wartości parametru Q, poprzez predykcję modelu dzięki czemu jesteśmy w stanie zaktualizować wartość parametru Q, następnie przechodzimy do faktycznego treningu naszego modelu. Za pomocą metod biblioteki PyTorch obliczamy gradient, funkcję błędu, i propagację wsteczną, dla modelu.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -302,29 +303,30 @@ def train_step(self, state, action, reward, next_state, game_state):
 \clearpage
 
 
-Klasa \lcode{Trainer} ma za zadanie połączyć ze sobą grę na, której agent ma się uczyć wraz z modelem sieci neuronowej. Do tego celu została stworzona klasa, która dziedziczy ze standardowej biblioteki ABC (Abstract Classes). Pozwala to na użycie klasy \lcode{Trainer} jako definicji interfejsu dzięki, któremu gra mogłaby się połączyć z modelem:
+Klasa \lcode{Trainer} \ref{code:class_trainer} ma za zadanie połączyć ze sobą grę na, której agent ma się uczyć wraz z modelem sieci neuronowej. Do tego celu została stworzona klasa, która dziedziczy ze standardowej biblioteki ABC (Abstract Classes). Pozwala to na użycie klasy \lcode{Trainer} jako definicji interfejsu dzięki, któremu gra mogłaby się połączyć z modelem.
 
 \begin{onepage}
     \begin{lstlisting}[
     caption={Definicja klasy \lcode{Trainer}},
-    label=code:,
+    label=code:class_trainer,
     language={Python},
     numbers=none
 ]
 class Trainer(ABC):
-    def __init__(self, game, input_size: int, output_size: int):
+    def __init__(self, game, input_size: int, output_size: int, hidden_size: int):
         self.game = game
         self.input_size = input_size
         self.output_size = output_size
+        self.hidden_size = hidden_size
     \end{lstlisting}
 \end{onepage}
 
-Sama klasa definiuje rozmiary sieci neuronowej, ale to jej abstracyjne metody, czyli inaczej funkcje, które klasy dziedziczące z klasy \lcode{Trainer} muszą zaimplementować definiują w jaki sposób siec neuronowa będzie dostawała informacje ze środowiska, oraz w jaki sposób będzie na nie działać swoimi akcjami:
+Sama klasa definiuje rozmiary sieci neuronowej, ale to jej abstracyjne metody (\lcode{get_state()} i \lcode{perform_action()} \ref{code:abs_methods}), czyli inaczej funkcje, które klasy dziedziczące z klasy \lcode{Trainer} muszą zaimplementować definiują w jaki sposób siec neuronowa będzie dostawała informacje ze środowiska, oraz w jaki sposób będzie na nie działać swoimi akcjami.
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={},
-    label=code:,
+    caption={Abstrakcyjne metody służące jako definicja interfejsu},
+    label=code:abs_methods,
     language={Python},
     numbers=none
 ]
@@ -338,12 +340,12 @@ def perform_action(self) -> Tuple[int, bool, int]:
 \end{lstlisting}
 \end{onepage}
 
-Klasa \lcode{Trainer} posiada metodę \lcode{train()}, która jest odpowiedzialna za uruchomienie całej procedury uczenia maszynowego na zdefiniowanym interfejsie z danym środowiskiem. Parametrem jaki przyjmuje jest nazwa pod jaką ma zostać zapisana sieć neuronowa i jej wagi w postaci binarnej na przyszły użytek użytkownika. W środku funkcji istnieje pętla \lcode{while}, która jest odpowiedzialna za proces nauki sieci. Na początku zapisujemy stary stan gry, następnie z obecnego modelu pobieramy akcję. Po zastosowaniu akcji na środowisko zapisujemy rezultat jaki dała akcja, oraz zapisujemy stan gry po przeprowadzaniu akcji. Następnie trenujemy pamięć krótką na wykonanej akcji, oraz zapisujemy daną akcję i jej rezultaty, na późniejszy trening pamięci długotrwałej. Następnie sprawdzany jest stan gry. Jeśli gra dobiegła końca trenowana jest pamięć długotrwała na całej rozgrywce, wytrenowany model jest zapisywany do wskazanego pliku, oraz wyrysowywany jest graf wyników:
+Klasa \lcode{Trainer} posiada metodę \lcode{train()} \ref{code:def_train}, która jest odpowiedzialna za uruchomienie całej procedury uczenia maszynowego na zdefiniowanym interfejsie z danym środowiskiem. Parametrem jaki przyjmuje jest nazwa pod jaką ma zostać zapisana sieć neuronowa i jej wagi w postaci binarnej na przyszły użytek użytkownika. W środku funkcji istnieje pętla \lcode{while}, która jest odpowiedzialna za proces nauki sieci. Na początku zapisujemy stary stan gry, następnie z obecnego modelu pobieramy akcję. Po zastosowaniu akcji na środowisko zapisujemy rezultat jaki dała akcja, oraz zapisujemy stan gry po przeprowadzaniu akcji. Następnie trenujemy pamięć krótką na wykonanej akcji, oraz zapisujemy daną akcję i jej rezultaty, na późniejszy trening pamięci długotrwałej. Następnie sprawdzany jest stan gry. Jeśli gra dobiegła końca trenowana jest pamięć długotrwała na całej rozgrywce, wytrenowany model jest zapisywany do wskazanego pliku, oraz wyrysowywany jest graf wyników.
 
 \begin{onepage}
     \begin{lstlisting}[
     caption={Implementacja metody \lcode{train()}},
-    label=code:,
+    label=code:def_train,
     language={Python},
     numbers=none
 ]
@@ -352,7 +354,11 @@ def train(self, model_file: str = "model.pth"):
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = Agent()
+    agent = Agent(
+        input_size=self.input_size,
+        output_size=self.output_size,
+        hidden_size=self.hidden_size,
+    )
     while True:
         # Get the old state
         old_state = self.get_state()
@@ -360,7 +366,6 @@ def train(self, model_file: str = "model.pth"):
         final_move = agent.get_action(old_state)
         # Perform the Move and get the new State
         reward, game_over, game_score = self.perform_action(final_move)
-        print(f"play step: {reward, game_over, game_score}")
         new_state = self.get_state()
         # Train the short memory ON EACH MOVE
         agent.train_short_memory(
