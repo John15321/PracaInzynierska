@@ -17,6 +17,10 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
 
 \section{Implementacja gry}
 
+
+Na początku zaimportowane zostają moduły potrzebne do uruchomienia gry i do jej wewnętrznych procesów:
+
+
 \begin{onepage}
     \begin{lstlisting}[
         caption={},
@@ -33,6 +37,11 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+
+
+Stworzenie pomocniczych klas służących jako enumeratory na kolory i kierunki:
+
+
 \begin{onepage}
     \begin{lstlisting}[
         caption={},
@@ -40,7 +49,6 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         language={Python},
         numbers=none,
         ]
-        # Colors
         class GameColors(Enum):
             WHITE: Tuple = (255, 255, 255)
             RED: Tuple = (150, 0, 0)
@@ -58,6 +66,9 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
+
+Klasa tworząca abstrakcję punktu na mapie powstałego z pikseli:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -66,7 +77,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         language={Python},
         numbers=none,
         ]
-        class GamePointOnTheMap:
+    class GamePointOnTheMap:
         def __init__(self, x: int, y: int) -> None:
             self._x = None
             self._y = None
@@ -97,6 +108,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+Definicja głównej klasy odpowiedzialnej za mechanikę gry. W jej konstruktorze zainicjalizowane zostaje okno graficzne służące wizualizacji gry:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -109,7 +121,6 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         def __init__(self, w: int = 640, h: int = 480):
             self.w = w
             self.h = h
-            # init display
             self.display = pygame.display.set_mode((self.w, self.h))
             pygame.display.set_caption("Snake")
             self.clock = pygame.time.Clock()
@@ -118,6 +129,9 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
+
+Funkcja odpowiadająca za resetowanie gry:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -127,7 +141,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         numbers=none,
         ]
 
-        def reset_game_state(self):
+    def reset_game_state(self):
         # Initialize game state
         self.direction = GameDirection.RIGHT
 
@@ -146,6 +160,9 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+
+Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, dla węża na mapie:
+
 \begin{onepage}
     \begin{lstlisting}[
         caption={},
@@ -153,8 +170,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         language={Python},
         numbers=none,
         ]
-
-        def _place_food(self):
+    def _place_food(self):
         x = random.randint(0, (self.w - BLOCK_SIZE) // BLOCK_SIZE) * BLOCK_SIZE
         y = random.randint(0, (self.h - BLOCK_SIZE) // BLOCK_SIZE) * BLOCK_SIZE
         self.food = GamePointOnTheMap(x, y)
@@ -163,6 +179,10 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
+
+Funkcja \lcode{play_step} jest odpowiedzialna za każdą klatkę rozgrywki, na początku sprawdza czy użytkownik sie chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia styację rozgrywki, i decyduje o tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
+
 \begin{onepage}
     \begin{lstlisting}[
         caption={},
@@ -171,30 +191,26 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         numbers=none,
         ]
 
-        def play_step(self, action) -> Tuple[int, bool, int]:
+    def play_step(self, action) -> Tuple[int, bool, int]:
         self.frame_iteration_number += 1
         # 1. collect user input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
         # 2. move
         self._move(action)  # update the head
         self.snake.insert(0, self.head)
-
         # 3. Update the game state
-
         # Eat food: +10
         # Game Over: -10
         # Else: 0
         reward = 0
         game_over = False
-        if self.is_collision() or self.frame_iteration_number > 100 * len(self.snake):
+        if self.is_collision() or self.frame_iteration_number>100*len(self.snake):
             game_over = True
             reward = -10
             return reward, game_over, self.score
-
         # 4. place new food or just move
         if self.head == self.food:
             self.score += 1
@@ -202,15 +218,18 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
             self._place_food()
         else:
             self.snake.pop()
-
         # 5. update ui and clock
         self._update_ui()
         self.clock.tick(SPEED)
         # 6. return game over and score
         return reward, game_over, self.score
-
     \end{lstlisting}
 \end{onepage}
+
+\clearpage
+
+Pomocnicza funkcja, której zadaniem jest wykrycie kolizji obiektów:
+
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -220,7 +239,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         numbers=none,
         ]
 
-        def is_collision(self, point=None):
+    def is_collision(self, point=None):
         if point is None:
             point = self.head
         # Check if it hits the boundary
@@ -238,6 +257,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
     \end{lstlisting}
 \end{onepage}
 
+Pomocnicza prywatna funkcja odpowiedzialna za aktualizację interfejsu graficznego:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -247,9 +267,8 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         numbers=none,
         ]
 
-        def _update_ui(self):
+    def _update_ui(self):
         self.display.fill(GameColors.BLACK.value)
-
         for pt in self.snake:
             pygame.draw.rect(
                 self.display,
@@ -261,21 +280,20 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
                 GameColors.LIGHT_GREEN.value,
                 pygame.Rect(pt.x + 4, pt.y + 4, 12, 12),
             )
-
         pygame.draw.rect(
             self.display,
             GameColors.RED.value,
             pygame.Rect(self.food.x, self.food.y, BLOCK_SIZE, BLOCK_SIZE),
         )
-
         text = font.render(f"Score: {self.score}", True, GameColors.WHITE.value)
         self.display.blit(text, [0, 0])
         pygame.display.flip()
-
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
 
+Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -285,9 +303,8 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         numbers=none,
         ]
 
-        def _move(self, action):
+    def _move(self, action):
         # [straight, right, left]
-
         clock_wise = [
             GameDirection.RIGHT,
             GameDirection.DOWN,
@@ -295,7 +312,6 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
             GameDirection.UP,
         ]
         move_index = clock_wise.index(self.direction)
-
         if np.array_equal(action, [1, 0, 0]):
             new_direction = clock_wise[move_index]  # no change
         elif np.array_equal(action, [0, 1, 0]):
@@ -304,9 +320,7 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
         else:  # [0, 0, 1]
             next_idx = (move_index - 1) % 4
             new_direction = clock_wise[next_idx]
-
         self.direction = new_direction
-
         x = self.head.x
         y = self.head.y
         if self.direction == GameDirection.RIGHT:
@@ -317,23 +331,10 @@ Wąż został przestawiony w postaci linii składającej się z pojedynczych zie
             y += BLOCK_SIZE
         elif self.direction == GameDirection.UP:
             y -= BLOCK_SIZE
-
         self.head = GamePointOnTheMap(x=x, y=y)
     \end{lstlisting}
 \end{onepage}
 
-
-
-\begin{onepage}
-    \begin{lstlisting}[
-        caption={},
-        label=code:,
-        language={Python},
-        numbers=none,
-        ]
-
-    \end{lstlisting}
-\end{onepage}
 
 
 \clearpage
