@@ -15,7 +15,32 @@ Każde połączenie, czyli inaczej każda synapsa w biologicznej sieci neuronowe
 \clearpage
 
 
-W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez stworzenie stworzenie obliczeniowego modelu sieci neuronowej. W późnych latach 40, dwudziestego wieku, D. O. Hebb stworzył hipotezę bazującą na mechanizmie neuroplastyczności \cite{Neuroplastycznosc}, czyli zdolności tkanki nerwowej do tworzenia nowych połączeń mających na celu jej reorganizację, adaptację lub zmianę. Jest to powszechna cecha neuronów, która występuje na każdym poziomie układu nerwowego. Teoria Hebbiana postuluje zwiększenie wydajności synaps na skutek ciągłej stymulacji. W roku 1945 Farley i Wesley A. Clark jako pierwsi użyli maszyny obliczeniowej (wtedy nazywanej jeszcze "kalkulatorami"), do symulacji sieci neuronów Hebbiana. Pierwsze funkcjonalne sieci neuronowe z wieloma warstwami zostały opublikowane przez Ivakhnenko i Lape w roku 1965. A podstawy algorytmu propagacji wstecznej (z ang. backpropagation)
+W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez stworzenie stworzenie obliczeniowego modelu sieci neuronowej. W późnych latach 40, dwudziestego wieku, D. O. Hebb stworzył hipotezę bazującą na mechanizmie neuroplastyczności \cite{Neuroplastycznosc}, czyli zdolności tkanki nerwowej do tworzenia nowych połączeń mających na celu jej reorganizację, adaptację lub zmianę. Jest to powszechna cecha neuronów, która występuje na każdym poziomie układu nerwowego. Teoria Hebbiana postuluje zwiększenie wydajności synaps na skutek ciągłej stymulacji. W roku 1945 Farley i Wesley A. Clark jako pierwsi użyli maszyny obliczeniowej (wtedy nazywanej jeszcze "kalkulatorami"), do symulacji sieci neuronów Hebbiana. Pierwsze funkcjonalne sieci neuronowe z wieloma warstwami zostały opublikowane przez Ivakhnenko i Lape w roku 1965. A podstawy algorytmu propagacji wstecznej (z ang. backpropagation).
+
+W uczeniu maszynowym propagacja wsteczna \cite{Backpropagation} jest szeroko używanym algorytmem służącym do trenowania sieci neuronowych. Przy szkoleniu sieci neuronowej propagacja wsteczna oblicza gradient funkcji błędu względem wagi sieci, dla konkretnego wejścia/wyjścia, i robi to efektywnie pod względem obliczeniowym w przeciwieństwie do naiwnych metod obliczeniowych obliczania gradientu względem każdej wagi indywidualnie. Efektywność sprawia, że możliwe jest użycie metod gradientowych do trenowania sieci wielowarstwowych, uaktualniania wag, aby zminimalizować funkcję błędu. Metoda gradientu prostego, lub jego różne warianty takie jak metoda gradientu stochastycznego są bardzo często używane. Algorytm propagacji wstecznej działa na zasadzie obliczania gradientu funkcji błędu każdej z wagi korzystając z reguły łańcuchowej, obliczając gradient każdej warstwy po kolei, iterując w tył od ostatniej warstwy, aby uniknąć powtarzających się obliczeń, co między innymi jest przykładem programowania dynamicznego.
+
+Początek sztucznych sieci neuronowych był spowodowany inspiracją i próbą użycia architektury ludzkiego mózgu tak, aby mógł on wykonywać zadanie, które są bardzo problematyczne, dla konwencjonalnych algorytmów. Dość szybko nastąpiła reorientacja ku ulepszeniu empirycznych wyników, opuszczając tym samym próby prawdziwego, zgodnego z ich biologicznymi prekursorami. Neurony połączone są ze sobą różnorakimi metodami tak, aby umożliwić wyjście niektórych neuronów, aby stało się wejściem innych. W ten sposób sieć tworzy ukierunkowany graf wag.
+
+Sztuczna sieć neuronowa składa się z kolekcji symulowanych neuronów. Każdy neuron jest wierzchołkiem w grafie, który jest połączony z innymi wierzchołkami za pomocą połączeń nazywanych krawędziami. Każda krawędź ma wagę, która determinuje siłę z jaką oddziaływuje na inne neurony.
+
+
+
+\section{Uczenie przez wzmacnianie}
+
+Uczenie przez wzmacnianie (ang. reinforcement learning, RL) jest jednym z typów uczenia maszynowego, które koncentruje się na inteligentnych agentach, które dokonują akcji w danych środowiskach tak, aby zmaksymalizować kumulacyjną nagrodę. Reinforcement learning jest jednym z trzech podstawowych paradygmatów uczenia maszynowego, obok uczenia nadzorowanego (Supervised Learning), oraz uczenia nienadzorowanego (Unsupervised Learning).
+
+Reinforcement learning różni się od uczenia nadzorowanego tym, że nie potrzebuje poukładanego, oznakowanego zestawu danych wejść i wyjść, które mają zostać zaprezentowane sieci. Dodatkowo sub-optymalne zachowania i rozwiązania sieci nie wymagają korekcji. Zamiast tego trening sieci skupia się na balansie pomiędzy eksploracją nowych zachowań, oraz eksploatacją już istniejących umiejętności.
+Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób, gdzie to agent umieszczony w danym środowisku sczytuje jego stan. Stan środowiska jest wejściem sieci neuronowej. Następnie na podstawie danego stanu podejmuje decyzję, która jest wskazana przez wyjście sieci neuronowej. Podjęta decyzja wpływa na środowisko, następnie na podstawie rezultatu uzyskanego poprzez daną akcję dokonywana jest poprawa wag połączeń sieci. Poniższy diagram przedstawia uproszczony schemat tego działania, biorąc za środowisko grę komputerową:
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/GameAI_Diagram.png}
+    \caption{Symboliczny model sieci w połączeniu z grą}
+    \label{img:rf_learning_diagram}
+\end{figure}
+
+
+\section{Q-learning}
 
 
 
@@ -39,12 +64,3 @@ W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez s
 
 
 
-
-
-
-\begin{figure}[h]
-    \centering
-    \bigimage{img/GameAI_Diagram.png}
-    \caption{Symboliczny model sieci w połączeniu z grą}
-    \label{img:rf_learning_diagram}
-\end{figure}
