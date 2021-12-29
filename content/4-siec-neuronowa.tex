@@ -118,7 +118,6 @@ LEARNING_RATE = 0.001
     \end{lstlisting}
 \end{onepage}
 
-\clearpage
 
 Kolejnym krokiem jest definicja klasy \lcode{Agent}, która definiuje parametry takie jak rozmiar warstw wejściowych, wewnętrznych/ukrytych, oraz wyjściowych sieci neuronowej, współczynnik $\varepsilon$ kontrolujący losowość akcji agenta, oraz współczynnik gamma, inaczej zwany jako discount-rate. Dodatkowo tworzymy model sieci neuronowej \lcode{self.model} korzystając z klasy \lcode{LinearQNet} z biblioteki PyTorch, oraz \lcode{self.trainer}, który jest obiektem odpowiedzialnym za trening sieci neuronowej, zgodnie z podanymi parametrami:
 
@@ -164,10 +163,35 @@ def remember(self, state, action, reward, next_state, game_state):
     \end{lstlisting}
 \end{onepage}
 
+Metoda \lcode{get_action()} zwraca podjętą akcję przez model. Z uwagi na balans pomiędzy eksploracją, a eksploatacją w uczeniu wzmacnianym we wczesnych fazach gry implementujemy możliwość losowych ruchów tak, aby agent miał możliwość eksploracji:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Definicja metody \lcode{get_action}},
+    label=code:get_action_method:,
+    language={Python},
+    numbers=none
+]
+def get_action(self, state):
+    # Get random moves
+    self.epsilon = 80 - self.number_of_games
+    final_move = [0, 0, 0]
+    if random.randint(0, 200) < self.epsilon:
+        move = random.randint(0, 2)
+        final_move[move] = 1
+    else:
+        state0 = torch.tensor(state, dtype=torch.float)
+        prediction = self.model(state0)
+        move = torch.argmax(prediction).item()
+        final_move[move] = 1
+
+    return final_move
+\end{lstlisting}
+\end{onepage}
+
 
 
 Następnie definiowane są metody nauki krótko pamięciowej, długo pamięciowej, które wzywają metodę \lcode{self.trainer.train_step()} klasy \lcode{QTrainer}.
-\clearpage
 Metoda \lcode{self.train_long_memory()} jest odpowiedzialna za trenowanie sieci neuronowej na batch'u wyników gry po jej zakończeniu. W ten sposób tworzona jest długoterminowa pamięć agenta, która jest w stanie uczyć się z błędów oraz sukcesów całej rozgrywki:
 
 \begin{onepage}
@@ -205,7 +229,7 @@ def train_short_memory(self, state, action, reward, next_state, game_state):
     \end{lstlisting}
 \end{onepage}
 
-Metoda \lcode{self.trainer.train_step()} jest zaimplementowana wewnątrz klasy \lcode{QTrainer}. Klasa \lcode{QTrainer} jest odpowiedzialna za trenowanie sieci neuronowej używając wskazanych parametrów takich jak współczynnik nauczania (learning rate), czy współczynnik gamma:
+Klasa \lcode{QTrainer} jest odpowiedzialna za trenowanie sieci neuronowej używając wskazanych parametrów takich jak współczynnik nauczania (learning rate), czy współczynnik gamma:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -229,7 +253,7 @@ Adam (\lcode{optim.Adam()}) \cite{AdamOpt1} \cite{AdamOpt2} jest algorytmem opty
 
 \clearpage
 
-
+Metoda \lcode{self.trainer.train_step()} jest zaimplementowana wewnątrz klasy \lcode{QTrainer}, odpowiada ona za przeprowadzenie każdego kroku nauki sieci neuronowej. Konwertujemy zmienne reprezentujące stan, nowy stan po akcji agenta, akcje, oraz nagrodę do typów tensora z biblioteki PyTorch. Z uwagi na możliwość przekazania parametrów do nauki w formie batch'a, odpowiednik warunek konwertuje je na poprawne tensory. Kolejnym krokiem jest pozyskanie wartości parametru Q, poprzez predykcję modelu dzięki czemu jesteśmy w stanie zaktualizować wartość parametru Q, następnie przechodzimy do faktycznego treningu naszego modelu. Za pomocą metod biblioteki PyTorch obliczamy gradient, funkcję błędu, i propagację wsteczną, dla modelu:
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -275,7 +299,28 @@ def train_step(self, state, action, reward, next_state, game_state):
 \end{lstlisting}
 \end{onepage}
 
-%%%%%%%%%%%%%%%%%%%%%%%%% 
+\clearpage
+
+
+Klasa \lcode{Trainer} ma za zadanie połączyć ze sobą grę na, której agent ma się uczyć wraz z modelem sieci neuronowej. Do tego celu została stworzona klasa, która dziedziczy ze standardowej biblioteki ABC (Abstract Classes). Pozwala to na użycie klasy \lcode{Trainer} jako definicji interfejsu dzięki, któremu gra mogłaby się połączyć z modelem:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Definicja klasy \lcode{Trainer}},
+    label=code:,
+    language={Python},
+    numbers=none
+]
+class Trainer(ABC):
+    def __init__(self, game, input_size: int, output_size: int):
+        self.game = game
+        self.input_size = input_size
+        self.output_size = output_size
+    \end{lstlisting}
+\end{onepage}
+
+Sama klasa definiuje rozmiary sieci neuronowej, ale to jej abstracyjne metody, czyli inaczej funkcje, które klasy dziedziczące z klasy \lcode{Trainer} muszą zaimplementować definiują w jaki sposób siec neuronowa będzie dostawała informacje ze środowiska, oraz w jaki sposób będzie na nie działać swoimi akcjami:
+
 \begin{onepage}
     \begin{lstlisting}[
     caption={},
@@ -283,6 +328,73 @@ def train_step(self, state, action, reward, next_state, game_state):
     language={Python},
     numbers=none
 ]
+@abstractmethod
+def get_state(self) -> np.ndarray:
+    pass
 
+@abstractmethod
+def perform_action(self) -> Tuple[int, bool, int]:
+    pass
+\end{lstlisting}
+\end{onepage}
+
+Klasa \lcode{Trainer} posiada metodę \lcode{train()}, która jest odpowiedzialna za uruchomienie całej procedury uczenia maszynowego na zdefiniowanym interfejsie z danym środowiskiem. Parametrem jaki przyjmuje jest nazwa pod jaką ma zostać zapisana sieć neuronowa i jej wagi w postaci binarnej na przyszły użytek użytkownika. 
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={},
+    label=code:,
+    language={Python},
+    numbers=none
+]
+def train(self, model_file: str = "model.pth"):
+    plot_scores = []
+    plot_mean_scores = []
+    total_score = 0
+    record = 0
+    agent = Agent()
+    while True:
+        # Get the old state
+        old_state = self.get_state()
+        # Get the move based on the State
+        final_move = agent.get_action(old_state)
+        # Perform the Move and get the new State
+        reward, game_over, game_score = self.perform_action(final_move)
+        print(f"play step: {reward, game_over, game_score}")
+        new_state = self.get_state()
+        # Train the short memory ON EACH MOVE
+        agent.train_short_memory(
+            state=old_state,
+            action=final_move,
+            reward=reward,
+            next_state=new_state,
+            game_state=game_over,
+        )
+        # Remember the state for long term training
+        agent.remember(
+            state=old_state,
+            action=final_move,
+            reward=reward,
+            next_state=new_state,
+            game_state=game_over,
+        )
+        if game_over:
+            # Train long memory, plot the result
+            self.game.reset_game_state()
+            agent.number_of_games += 1
+            agent.train_long_memory()
+            # Save the newest record
+            if game_score > record:
+                record = game_score
+                agent.model.save_model(file_name=model_file)
+            print(
+                f"Game {agent.number_of_games}, Score {game_score}, Record {record}"
+            )
+            # Plot the scores
+            plot_scores.append(game_score)
+            total_score += game_score
+            mean_score = total_score / agent.number_of_games
+            plot_mean_scores.append(mean_score)
+            plot(plot_scores, plot_mean_scores)
     \end{lstlisting}
 \end{onepage}
