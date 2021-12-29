@@ -27,7 +27,7 @@ Sztuczna sieć neuronowa składa się z kolekcji symulowanych neuronów. Każdy 
 
 \section{Uczenie przez wzmacnianie}
 
-Uczenie przez wzmacnianie (ang. reinforcement learning, RL) jest jednym z typów uczenia maszynowego, które koncentruje się na inteligentnych agentach, które dokonują akcji w danych środowiskach tak, aby zmaksymalizować kumulacyjną nagrodę. Reinforcement learning jest jednym z trzech podstawowych paradygmatów uczenia maszynowego, obok uczenia nadzorowanego (Supervised Learning), oraz uczenia nienadzorowanego (Unsupervised Learning).
+Uczenie przez wzmacnianie (ang. reinforcement learning, RL) \cite{ReinforcementLearning} \cite{ReinforcementLearningBook} \cite{{DeepReinforcementLearning}} jest jednym z typów uczenia maszynowego, które koncentruje się na inteligentnych agentach, które dokonują akcji w danych środowiskach tak, aby zmaksymalizować kumulacyjną nagrodę. Reinforcement learning jest jednym z trzech podstawowych paradygmatów uczenia maszynowego, obok uczenia nadzorowanego (Supervised Learning), oraz uczenia nienadzorowanego (Unsupervised Learning).
 
 Reinforcement learning różni się od uczenia nadzorowanego tym, że nie potrzebuje poukładanego, oznakowanego zestawu danych wejść i wyjść, które mają zostać zaprezentowane sieci. Dodatkowo sub-optymalne zachowania i rozwiązania sieci nie wymagają korekcji. Zamiast tego trening sieci skupia się na balansie pomiędzy eksploracją nowych zachowań, oraz eksploatacją już istniejących umiejętności.
 Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób, gdzie to agent umieszczony w danym środowisku sczytuje jego stan. Stan środowiska jest wejściem sieci neuronowej. Następnie na podstawie danego stanu podejmuje decyzję, która jest wskazana przez wyjście sieci neuronowej. Podjęta decyzja wpływa na środowisko, następnie na podstawie rezultatu uzyskanego poprzez daną akcję dokonywana jest poprawa wag połączeń sieci. Poniższy diagram przedstawia uproszczony schemat tego działania, biorąc za środowisko grę komputerową:
@@ -42,7 +42,30 @@ Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób,
 
 \section{Q-learning}
 
+Q-learning \cite{HandsOnQLearningWithPython} \cite{Qlearning} jest to bezmodelowy algorytm nauczania przez wzmacnianie, którego zadaniem jest nauczenie się wartości danej akcji w danym środowisku i stanie. Nie wymaga modelu środowiska. Ważną wartością w tej metodzie nauczania jest wartość Q, która oznacza jakość wykonanej akcji.
+Implementacja Q-learningu zakłada następującą procedurę:
 
+\begin{enumerate}
+    \centering
+    \item Inicjalizacja wartości Q
+    \item Wybranie akcji przez model
+    \item Wykonanie akcji
+    \item Pomiar nagrody
+    \item Zaktualizowanie wartości Q + trening modelu
+    \item Powrót do punktu numer 1.
+\end{enumerate}
+
+W pierwszym kroku inicjalizujemy wartość Q, poprzez inicjalizację naszego modelu losowymi parametrami. Następnie w drugim kroku wybieramy akcję, którą ma wykonać nasz agent. Akcja jest wybierana na podstawie predykcji modelu wykonując metodę \lcode{model.predict(state)}, dodatkowo co jakiś arbitralny procent ruchów decydujemy się na losowy ruch w celu umożliwienia modelowi eksploracji innych możliwości niż te już potencjalnie wyuczone, co jest głównie przydatne na początku nauki modelu, kiedy nie ma on doświadczenia ze środowiskiem. Kolejnym krokiem jest wykonanie danej akcji na środowisku i zmierzenie nagrody, która została spowodowana danym ruchem, dzięki tej zmierzonej wartości możliwe jest dokonanie aktualizacji wartości Q, która jest obiektywnym miernikiem jakości akcji, dzięki czemu możliwe jest trenowanie neuronów na danej akcji.
+
+Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellman'a \cite{BellmanEquation}
+
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/bellman_eq.png}
+    \caption{Równanie Bellman'a \cite{BellmanEquationPic}}
+    \label{img:bellman_eq}
+\end{figure}
 
 
 
