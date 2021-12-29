@@ -57,7 +57,7 @@ Implementacja Q-learningu zakłada następującą procedurę:
 
 W pierwszym kroku inicjalizujemy wartość Q, poprzez inicjalizację naszego modelu losowymi parametrami. Następnie w drugim kroku wybieramy akcję, którą ma wykonać nasz agent. Akcja jest wybierana na podstawie predykcji modelu wykonując metodę \lcode{model.predict(state)}, dodatkowo co jakiś arbitralny procent ruchów decydujemy się na losowy ruch w celu umożliwienia modelowi eksploracji innych możliwości niż te już potencjalnie wyuczone, co jest głównie przydatne na początku nauki modelu, kiedy nie ma on doświadczenia ze środowiskiem. Kolejnym krokiem jest wykonanie danej akcji na środowisku i zmierzenie nagrody, która została spowodowana danym ruchem, dzięki tej zmierzonej wartości możliwe jest dokonanie aktualizacji wartości Q, która jest obiektywnym miernikiem jakości akcji, dzięki czemu możliwe jest trenowanie neuronów na danej akcji.
 
-Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellman'a \cite{BellmanEquation}
+Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellman'a \cite{BellmanEquation}, gdzie nowa wartość Q jest obliczana z sumy starej wartości Q z współczynnikiem uczenia pomnożonym przez sumę nagrody za dokonaną akcję, wraz z maksymalną spodziewaną przyszłościową wartością Q biorąc pod uwagę nowy stan przemnożoną przez discount-rate minus obecna wartość Q:
 
 
 \begin{figure}[h]
@@ -67,23 +67,123 @@ Funkcją błędu odpowiedzialną za obliczenie wartości Q jest równanie Bellma
     \label{img:bellman_eq}
 \end{figure}
 
+Dzięki równaniu Bellman'a możliwe jest skonstruowanie nowej funkcji błędu średniokwadratowego \cite{BladSredniokwadratowy} opartego o wartość Q:
+
+$$
+    Błąd = (Q_{nowe} - Q)^{2}
+$$
+
+\clearpage
+
+\section{Implementacja}
+
+
+Na początku definiowane jest kilka podstawowych parametrów takich jak maksymalna liczba trzymanych obiektów w pamięci, batch-size \cite{BatchNormalization} (czyli liczbę egzemplarzy treningowych na których będzie szkolona sieć naraz), oraz współczynnik uczenia, czyli parametr wiążący funkcję błędu ze zmianą wag:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Podstawowe parametry},
+    label=code:basic_params,
+    language={Python},
+    numbers=none
+]
+MAX_MEMORY = 100000
+BATCH_SIZE = 1000
+LEARNING_RATE = 0.001
+    \end{lstlisting}
+\end{onepage}
+
+
+Kolejnym krokiem jest definicja klasy \lcode{Agent}, która definiuje parametry takie jak rozmiar warstw wejściowych, wewnętrznych/ukrytych, oraz wyjściowych sieci neuronowej, współczynnik $\varepsilon$ kontrolujący losowość akcji agenta, oraz współczynnik gamma, inaczej zwany jako discount-rate. Dodatkowo tworzymy model sieci neuronowej \lcode{self.model} korzystając z klasy \lcode{LinearQNet} z biblioteki PyTorch, oraz \lcode{self.trainer}, który jest obiektem odpowiedzialnym za trening sieci neuronowej, zgodnie z podanymi parametrami:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Definicja klasy \lcode{Agent}},
+    label=code:agent_class_definition,
+    language={Python},
+    numbers=none
+]
+class Agent:
+    def __init__(
+        self,
+        input_size: int,
+        output_size: int,
+        epsilon: float = 0,
+        gamma: float = 0.9,
+        hidden_size: int = 256,
+    ) -> None:
+        self.number_of_games = 0
+        self.epsilon = epsilon  # Controls randomness
+        self.gamma = gamma  # Discount rate
+        self.memory = deque(maxlen=MAX_MEMORY)
+        self.model = LinearQNet(input_size, hidden_size, output_size)
+        self.trainer = QTrainer(
+            self.model, learning_rate=LEARNING_RATE, gamma=self.gamma
+        )
+    \end{lstlisting}
+\end{onepage}
+
+Utworzona klasa posiada metodę \lcode{remember()}, służącą do dodania stanu, akcji, nagrody, stanu będącego rezultatem akcji, oraz stanu gry, do specjalnej listy, która je zachowuje w celu przeprowadzenia treningu sieci neuronowej:
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Definicja metody \lcode{remember}},
+    label=coderemember_method:,
+    language={Python},
+    numbers=none
+]
+def remember(self, state, action, reward, next_state, game_state):
+    self.memory.append((state, action, reward, next_state, game_state))
+    \end{lstlisting}
+\end{onepage}
 
 
 
-\section{Budowa sieci}
+Następnie definiowane są metody nauki krótko pamięciowej, długo pamięciowej, które wzywają metodę \lcode{self.trainer.train_step()} klasy \lcode{QTrainer}:
 
 
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Metoda \lcode{train_long_memory}},
+    label=code:long_memory,
+    language={Python},
+    numbers=none
+]
+def train_long_memory(self):
+    if len(self.memory) > BATCH_SIZE:
+        mini_sample: List[Tuple] = random.sample(self.memory, BATCH_SIZE)
+    else:
+        mini_sample: List[Tuple] = self.memory
+
+    states, actions, rewards, next_states, game_states = zip(*mini_sample)
+    self.trainer.train_step(states, actions, rewards, next_states, game_states)
+
+\end{lstlisting}
+\end{onepage}
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Metoda \lcode{train_short_memory}},
+    label=code:short_memory,
+    language={Python},
+    numbers=none
+]
+def train_short_memory(self, state, action, reward, next_state, game_state):
+    self.trainer.train_step(state, action, reward, next_state, game_state)
+
+    \end{lstlisting}
+\end{onepage}
 
 
-\section{Optymizator}
+%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={},
+    label=code:,
+    language={Python},
+    numbers=none
+]
 
-
-
-\section{Strategia nauczania}
-
-
-
-\section{Dane wejściowe i wyjściowe modelu}
-
-
-
+    \end{lstlisting}
+\end{onepage}
