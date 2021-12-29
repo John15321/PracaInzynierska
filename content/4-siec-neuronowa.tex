@@ -338,11 +338,11 @@ def perform_action(self) -> Tuple[int, bool, int]:
 \end{lstlisting}
 \end{onepage}
 
-Klasa \lcode{Trainer} posiada metodę \lcode{train()}, która jest odpowiedzialna za uruchomienie całej procedury uczenia maszynowego na zdefiniowanym interfejsie z danym środowiskiem. Parametrem jaki przyjmuje jest nazwa pod jaką ma zostać zapisana sieć neuronowa i jej wagi w postaci binarnej na przyszły użytek użytkownika. 
+Klasa \lcode{Trainer} posiada metodę \lcode{train()}, która jest odpowiedzialna za uruchomienie całej procedury uczenia maszynowego na zdefiniowanym interfejsie z danym środowiskiem. Parametrem jaki przyjmuje jest nazwa pod jaką ma zostać zapisana sieć neuronowa i jej wagi w postaci binarnej na przyszły użytek użytkownika. W środku funkcji istnieje pętla \lcode{while}, która jest odpowiedzialna za proces nauki sieci. Na początku zapisujemy stary stan gry, następnie z obecnego modelu pobieramy akcję. Po zastosowaniu akcji na środowisko zapisujemy rezultat jaki dała akcja, oraz zapisujemy stan gry po przeprowadzaniu akcji. Następnie trenujemy pamięć krótką na wykonanej akcji, oraz zapisujemy daną akcję i jej rezultaty, na późniejszy trening pamięci długotrwałej. Następnie sprawdzany jest stan gry. Jeśli gra dobiegła końca trenowana jest pamięć długotrwała na całej rozgrywce, wytrenowany model jest zapisywany do wskazanego pliku, oraz wyrysowywany jest graf wyników:
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={},
+    caption={Implementacja metody \lcode{train()}},
     label=code:,
     language={Python},
     numbers=none
