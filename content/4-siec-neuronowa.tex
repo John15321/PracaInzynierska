@@ -77,6 +77,31 @@ $$
 
 \section{Implementacja}
 
+Import potrzebnych bibliotek takich jak NumPy \ref{section:numpy}, PyTorch \ref{section:pytorch}, Matplotlib \ref{section:matplotlib}:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Importowanie bibliotek i ich modułów},
+    label=code:imports,
+    language={Python},
+    numbers=none
+]
+import os
+import random
+from abc import ABC, abstractmethod
+from typing import Tuple
+
+import numpy as np
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+
+import matplotlib.pyplot as plt
+from IPython import display
+    \end{lstlisting}
+\end{onepage}
 
 Na początku definiowane jest kilka podstawowych parametrów takich jak maksymalna liczba trzymanych obiektów w pamięci, batch-size \cite{BatchNormalization} (czyli liczbę egzemplarzy treningowych na których będzie szkolona sieć naraz), oraz współczynnik uczenia, czyli parametr wiążący funkcję błędu ze zmianą wag:
 
@@ -93,6 +118,7 @@ LEARNING_RATE = 0.001
     \end{lstlisting}
 \end{onepage}
 
+\clearpage
 
 Kolejnym krokiem jest definicja klasy \lcode{Agent}, która definiuje parametry takie jak rozmiar warstw wejściowych, wewnętrznych/ukrytych, oraz wyjściowych sieci neuronowej, współczynnik $\varepsilon$ kontrolujący losowość akcji agenta, oraz współczynnik gamma, inaczej zwany jako discount-rate. Dodatkowo tworzymy model sieci neuronowej \lcode{self.model} korzystając z klasy \lcode{LinearQNet} z biblioteki PyTorch, oraz \lcode{self.trainer}, który jest obiektem odpowiedzialnym za trening sieci neuronowej, zgodnie z podanymi parametrami:
 
@@ -140,12 +166,13 @@ def remember(self, state, action, reward, next_state, game_state):
 
 
 
-Następnie definiowane są metody nauki krótko pamięciowej, długo pamięciowej, które wzywają metodę \lcode{self.trainer.train_step()} klasy \lcode{QTrainer}:
-
+Następnie definiowane są metody nauki krótko pamięciowej, długo pamięciowej, które wzywają metodę \lcode{self.trainer.train_step()} klasy \lcode{QTrainer}.
+\clearpage
+Metoda \lcode{self.train_long_memory()} jest odpowiedzialna za trenowanie sieci neuronowej na batch'u wyników gry po jej zakończeniu. W ten sposób tworzona jest długoterminowa pamięć agenta, która jest w stanie uczyć się z błędów oraz sukcesów całej rozgrywki:
 
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Metoda \lcode{train_long_memory}},
+    caption={Metoda \lcode{train_long_memory()}},
     label=code:long_memory,
     language={Python},
     numbers=none
@@ -155,16 +182,19 @@ def train_long_memory(self):
         mini_sample: List[Tuple] = random.sample(self.memory, BATCH_SIZE)
     else:
         mini_sample: List[Tuple] = self.memory
-
     states, actions, rewards, next_states, game_states = zip(*mini_sample)
     self.trainer.train_step(states, actions, rewards, next_states, game_states)
 
 \end{lstlisting}
 \end{onepage}
 
+
+
+Metoda \lcode{self.train_short_memory()} jest odpowiedzialna za trenowanie sieci neuronowej przy każdym ruchu w grze, dzięki czemu tworzona jest pamięć krótkoterminowa i agent jest w stanie uczyć się na świeżo popełnionych błędach, oraz sukcesach w rozgrywce:
+
 \begin{onepage}
     \begin{lstlisting}[
-    caption={Metoda \lcode{train_short_memory}},
+    caption={Metoda \lcode{train_short_memory()}},
     label=code:short_memory,
     language={Python},
     numbers=none
@@ -175,6 +205,75 @@ def train_short_memory(self, state, action, reward, next_state, game_state):
     \end{lstlisting}
 \end{onepage}
 
+Metoda \lcode{self.trainer.train_step()} jest zaimplementowana wewnątrz klasy \lcode{QTrainer}. Klasa \lcode{QTrainer} jest odpowiedzialna za trenowanie sieci neuronowej używając wskazanych parametrów takich jak współczynnik nauczania (learning rate), czy współczynnik gamma:
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Definicja klasy \lcode{QTrainer}},
+    label=code:qtrainer_imt,
+    language={Python},
+    numbers=none
+]
+class QTrainer:
+    def __init__(self, model: nn.Module, learning_rate, gamma) -> None:
+        self.learning_rate = learning_rate
+        self.gamma = gamma
+        self.model = model
+        self.optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+        self.criterion = nn.MSELoss()
+    \end{lstlisting}
+\end{onepage}
+
+
+Adam (\lcode{optim.Adam()}) \cite{AdamOpt1} \cite{AdamOpt2} jest algorytmem optymalizacyjnym, które jest rozwinięciem metody gradientu prostego, która została niedawno szeroko zaadaptowana, dla algorytmów trenowania sztucznej inteligencji. Jako funkcję błędu ustawiony zostaje błąd średniokwadratowy z biblioteki PyTorch \lcode{nn.MSELoss()}
+
+\clearpage
+
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Metoda \lcode{train_step()} klasy \lcode{QTrainer}},
+    label=code:train_step,
+    language={Python},
+    numbers=none
+]
+def train_step(self, state, action, reward, next_state, game_state):
+    state = torch.tensor(state, dtype=torch.float)
+    next_state = torch.tensor(next_state, dtype=torch.float)
+    action = torch.tensor(action, dtype=torch.long)
+    reward = torch.tensor(reward, dtype=torch.float)
+
+    if len(state.shape) == 1:
+        state = torch.unsqueeze(state, 0)
+        next_state = torch.unsqueeze(next_state, 0)
+        action = torch.unsqueeze(action, 0)
+        reward = torch.unsqueeze(reward, 0)
+        game_state = (game_state,)
+
+    # Predicted Q values with current state
+    prediction = self.model(state)
+    target = prediction.clone()
+    for each_game_state in range(len(game_state)):
+        Q_new = reward[each_game_state]
+        if not game_state[each_game_state]:
+            Q_new = reward[each_game_state] + self.gamma * torch.max(
+                self.model(next_state[each_game_state])
+            )
+
+        target[each_game_state][
+            torch.argmax(action[each_game_state]).item()
+        ] = Q_new
+
+    # Q new = r + y * max(prediction Q value)
+    self.optimizer.zero_grad()
+    loss = self.criterion(target, prediction)
+    loss.backward()
+
+    self.optimizer.step()
+
+\end{lstlisting}
+\end{onepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%% 
 \begin{onepage}

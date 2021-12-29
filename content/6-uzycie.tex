@@ -61,15 +61,15 @@ Następnie definiujemy dwie funkcje \lcode{get_state()}, oraz \lcode{perform_act
 ]
     def get_state(self) -> np.ndarray:
         head = self.game.snake[0]
-        point_left = GamePoint(head.x - 20, head.y)
-        point_right = GamePoint(head.x + 20, head.y)
-        point_up = GamePoint(head.x, head.y - 20)
-        point_down = GamePoint(head.x, head.y + 20)
+        point_left = GamePointOnTheMap(head.x - 20, head.y)
+        point_right = GamePointOnTheMap(head.x + 20, head.y)
+        point_up = GamePointOnTheMap(head.x, head.y - 20)
+        point_down = GamePointOnTheMap(head.x, head.y + 20)
 
-        left_direction = self.game.direction == Direction.LEFT
-        right_direction = self.game.direction == Direction.RIGHT
-        up_direction = self.game.direction == Direction.UP
-        down_direction = self.game.direction == Direction.DOWN
+        left_direction = self.game.direction == GameDirection.LEFT
+        right_direction = self.game.direction == GameDirection.RIGHT
+        up_direction = self.game.direction == GameDirection.UP
+        down_direction = self.game.direction == GameDirection.DOWN
     \end{lstlisting}
 \end{onepage}
 
@@ -97,35 +97,35 @@ W tym przykładzie zebranych będzie łącznie $11$ parametrów opisujących sta
     language={Python},
     numbers=none
 ]
-        state = [
-            # Danger straight
-            (right_direction and self.game.is_collision(point_right))
-            or (left_direction and self.game.is_collision(point_left))
-            or (up_direction and self.game.is_collision(point_up))
-            or (down_direction and self.game.is_collision(point_down)),
-            # Danger right
-            (up_direction and self.game.is_collision(point_right))
-            or (down_direction and self.game.is_collision(point_left))
-            or (left_direction and self.game.is_collision(point_up))
-            or (right_direction and self.game.is_collision(point_down)),
-            # Danger left
-            (down_direction and self.game.is_collision(point_right))
-            or (up_direction and self.game.is_collision(point_left))
-            or (right_direction and self.game.is_collision(point_up))
-            or (left_direction and self.game.is_collision(point_down)),
-            # Move direction
-            left_direction,
-            right_direction,
-            up_direction,
-            down_direction,
-            # Food location
-            self.game.food.x < self.game.head.x,  # Food left
-            self.game.food.x > self.game.head.x,  # Food right
-            self.game.food.y < self.game.head.y,  # Food up
-            self.game.food.y > self.game.head.y,  # Food down
-        ]
+state = [
+    # Danger is straight ahead
+    (right_direction and self.game.is_collision(point_right))
+    or (left_direction and self.game.is_collision(point_left))
+    or (up_direction and self.game.is_collision(point_up))
+    or (down_direction and self.game.is_collision(point_down)),
+    # Danger is on the right
+    (up_direction and self.game.is_collision(point_right))
+    or (down_direction and self.game.is_collision(point_left))
+    or (left_direction and self.game.is_collision(point_up))
+    or (right_direction and self.game.is_collision(point_down)),
+    # Danger is on the left
+    (down_direction and self.game.is_collision(point_right))
+    or (up_direction and self.game.is_collision(point_left))
+    or (right_direction and self.game.is_collision(point_up))
+    or (left_direction and self.game.is_collision(point_down)),
+    # Current move direction
+    left_direction,
+    right_direction,
+    up_direction,
+    down_direction,
+    # Food location
+    self.game.food.x < self.game.head.x,  # Food is on the left
+    self.game.food.x > self.game.head.x,  # Food is on the right
+    self.game.food.y < self.game.head.y,  # Food is up
+    self.game.food.y > self.game.head.y,  # Food is down
+]
 
-        return np.array(state, dtype=int)
+return np.array(state, dtype=int)
     \end{lstlisting}
 \end{onepage}
 
