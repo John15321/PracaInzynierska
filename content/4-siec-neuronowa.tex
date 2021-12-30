@@ -19,9 +19,9 @@ W 1943 roku Warren McCulloch i Walter Pitts zapoczątkowali dziedzinę poprzez s
 
 W uczeniu maszynowym propagacja wsteczna \cite{Backpropagation} jest szeroko używanym algorytmem służącym do trenowania sieci neuronowych. Przy szkoleniu sieci neuronowej propagacja wsteczna oblicza gradient funkcji błędu względem wagi sieci, dla konkretnego wejścia/wyjścia, i robi to efektywnie pod względem obliczeniowym w przeciwieństwie do naiwnych metod obliczeniowych obliczania gradientu względem każdej wagi indywidualnie. Efektywność sprawia, że możliwe jest użycie metod gradientowych do trenowania sieci wielowarstwowych, uaktualniania wag, aby zminimalizować funkcję błędu. Metoda gradientu prostego, lub jego różne warianty takie jak metoda gradientu stochastycznego są bardzo często używane. Algorytm propagacji wstecznej działa na zasadzie obliczania gradientu funkcji błędu każdej z wagi korzystając z reguły łańcuchowej, obliczając gradient każdej warstwy po kolei, iterując w tył od ostatniej warstwy, aby uniknąć powtarzających się obliczeń, co między innymi jest przykładem programowania dynamicznego.
 
-Początek sztucznych sieci neuronowych był spowodowany inspiracją i próbą użycia architektury ludzkiego mózgu tak, aby mógł on wykonywać zadanie, które są bardzo problematyczne, dla konwencjonalnych algorytmów. Dość szybko nastąpiła reorientacja ku ulepszeniu empirycznych wyników, opuszczając tym samym próby prawdziwego, zgodnego z ich biologicznymi prekursorami. Neurony połączone są ze sobą różnorakimi metodami tak, aby umożliwić wyjście niektórych neuronów, aby stało się wejściem innych. W ten sposób sieć tworzy ukierunkowany graf wag.
+Początek sztucznych sieci neuronowych był spowodowany inspiracją i próbą użycia architektury ludzkiego mózgu tak, aby mógł on wykonywać zadanie, które są bardzo problematyczne, dla konwencjonalnych algorytmów. Dość szybko nastąpiła reorientacja ku ulepszeniu empirycznych wyników, opuszczając tym samym próby prawdziwego, zgodnego z~ich biologicznymi prekursorami. Neurony połączone są ze sobą różnorakimi metodami tak, aby umożliwić wyjście niektórych neuronów, aby stało się wejściem innych. W ten sposób sieć tworzy ukierunkowany graf wag.
 
-Sztuczna sieć neuronowa składa się z kolekcji symulowanych neuronów. Każdy neuron jest wierzchołkiem w grafie, który jest połączony z innymi wierzchołkami za pomocą połączeń nazywanych krawędziami. Każda krawędź ma wagę, która determinuje siłę z jaką oddziaływuje na inne neurony.
+Sztuczna sieć neuronowa składa się z kolekcji symulowanych neuronów. Każdy neuron jest wierzchołkiem w grafie, który jest połączony z innymi wierzchołkami za pomocą połączeń nazywanych krawędziami. Każda krawędź ma wagę, która determinuje siłę z jaką oddziałuje na inne neurony.
 
 
 
@@ -42,7 +42,7 @@ Interakcja pomiędzy siecią, a środowiskiem przebiega w następujący sposób,
 
 \section{Q-learning}
 
-Q-learning \cite{HandsOnQLearningWithPython} \cite{Qlearning} jest to bezmodelowy algorytm nauczania przez wzmacnianie, którego zadaniem jest nauczenie się wartości danej akcji w danym środowisku i stanie. Nie wymaga modelu środowiska. Ważną wartością w tej metodzie nauczania jest wartość Q, która oznacza jakość wykonanej akcji.
+Q-learning \cite{HandsOnQLearningWithPython} \cite{Qlearning} jest to bezmodelowy algorytm nauczania przez wzmacnianie, którego zadaniem jest nauczenie się wartości danej akcji w danym środowisku i stanie. Nie wymaga modelu środowiska. Ważną wartością w tej metodzie nauczania jest wartość Q~,~która oznacza jakość wykonanej akcji.
 Implementacja Q-learningu zakłada następującą procedurę:
 
 \begin{enumerate}
@@ -214,7 +214,7 @@ def train_long_memory(self):
 
 
 
-Metoda \lcode{self.train_short_memory()} \ref{code:short_memory} jest odpowiedzialna za trenowanie sieci neuronowej przy każdym ruchu w grze, dzięki czemu tworzona jest pamięć krótkoterminowa i agent jest w stanie uczyć się na świeżo popełnionych błędach oraz sukcesach w rozgrywce.
+Metoda \lcode{self.train_short_memory()} \ref{code:short_memory} jest odpowiedzialna za trenowanie sieci neuronowej przy każdym ruchu w grze, dzięki czemu tworzona jest pamięć krótkoterminowa i~agent jest w stanie uczyć się na świeżo popełnionych błędach oraz sukcesach w rozgrywce.
 
 \begin{onepage}
     \begin{lstlisting}[

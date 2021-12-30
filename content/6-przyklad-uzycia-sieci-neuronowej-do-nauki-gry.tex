@@ -177,7 +177,7 @@ Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, d
 
 \clearpage
 
-Funkcja \lcode{play_step()} jest odpowiedzialna za każdą klatkę rozgrywki \ref{code:playsteppu}, na początku sprawdza czy użytkownik chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia sytuację rozgrywki, i decyduje o tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
+Funkcja \lcode{play_step()} jest odpowiedzialna za każdą klatkę rozgrywki \ref{code:playsteppu}, na początku sprawdza czy użytkownik chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia sytuację rozgrywki, i decyduje o~tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
 
 \begin{onepage}
     \begin{lstlisting}[
@@ -286,7 +286,7 @@ def _update_ui(self):
 
 \clearpage
 
-Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża \ref{code:_move}. Zamienia wybrany kierunek skrętu wężem na konkretne pozycje jego ciała na planszy gry i aktualizuje je.
+Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża \ref{code:_move}. Zamienia wybrany kierunek skrętu wężem na konkretne pozycje jego ciała na planszy gry i~aktualizuje je.
 
 \begin{onepage}
     \begin{lstlisting}[
