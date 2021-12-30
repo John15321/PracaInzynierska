@@ -391,9 +391,10 @@ def train(self, model_file: str = "model.pth"):
             if game_score > record:
                 record = game_score
                 agent.model.save_model(file_name=model_file)
-            print(
-                f"Game {agent.number_of_games}, Score {game_score}, Record {record}"
-            )
+                print(
+                    f"Game {agent.number_of_games}, "
+                    f"Score {game_score}, "
+                    f"Record {record}")
             # Plot the scores
             plot_scores.append(game_score)
             total_score += game_score
