@@ -2,7 +2,7 @@
     "diffEditor.wordWrap": "on",
     "editor.wordWrap": "on",
     "todo-tree.regex.regex": "(//|#|%|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
-    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.autoBuild.run": "never",
     "latex-workshop.latex.outDir": "%DIR%/latex-build",
     "latex-workshop.view.pdf.viewer": "browser",
     "cSpell.minWordLength": 2,
@@ -10,6 +10,7 @@
     "cSpell.words": [
         "Keras",
         "modularność",
+        "neuroplastyczności",
         "Rossum"
     ]
 }

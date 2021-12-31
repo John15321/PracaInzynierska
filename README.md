@@ -40,7 +40,7 @@ git tag x.y.z
 . save.sh
 ```
 
-*Skrypt korzysta z folderu `/latex-build`, jako źródła źródła w którym znajduje się zbudowana wersja pracy w PDF (zgodnie z ustawieniami w `/.vscode/settings.json`, oraz folderu `/versions` do zapisywania kolejnych wersji pracy w formacie PDF).
+*Skrypt korzysta z folderu `/latex-build`, jako źródła źródła w którym znajduje się zbudowana wersja pracy w PDF (zgodnie z ustawieniami w `/.vscode/settings.json` oraz folderu `/versions` do zapisywania kolejnych wersji pracy w formacie PDF).
 
 ## Licencja
 

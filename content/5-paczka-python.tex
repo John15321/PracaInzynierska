@@ -1,20 +1,325 @@
-\section{Paczka Python}
+\section{PyPI}
+\label{section:pypi}
+PyPI, \cite{PyPI} \cite{AdvancedPythonDevelopment} czyli Python Package Index jest oficjalnym repozytorium, dla języka Python \ref{section:python} przeznaczonym na third-party paczki przeznaczone, dla języka, które może zainstalować każdy użytkownik. PyPI jest operowany przez Python Software Foundation, która jest non-profit organizacją odpowiedzialną za utrzymywanie języka Python i jego  środowiska. Niektóre menadżery paczek takie jak pip \cite{Pip} używają PyPI jako domyślnego źródła paczek i ich zależności. Na dzień 30 października 2021 roku, ponad $336 \ 000$ Python'owych paczek może zostać w ten sposób zainstalowane. PyPI głównie hostuje Python'owe paczki w formie nazywanej ``sdists'', czyli z \textit{ang. ``source distributions}'', lub w formie pre-kompilowanej tak zwanej ``wheels''. PyPI jako indeks paczek pozwala użytkownikowi na wyszukiwanie paczek za pomocą konkretnych słów lub filtrów, przeszukując metadane paczek, takie jak licencje czy kompatybilność ze standardem POSIX. Pojedyncza paczka na PyPI może posiadać, pomijając metadanepoprzednie wersje paczki, pre-kompilowane wheel'e (na przykład zawierające DLL'e na system Windows), lub wiele innych form przewidzianych na inne systemy operacyjne i wersje Python'a.
 
-\paragraph{Ukryty link do spisu treści}
-Kliknij na numer strony, a pod nim masz ukryty odnośnik do spisu treści. Bardzo ułatwia skakanie po pdf'ie.
+Python Distribution Utilities, czyli w skrócie nazywane ``distutils'', to moduł dodany do Python'a, we wrześniu roku 2000, jako część standardowej biblioteki języka w wersji \lcode{1.6.1}, 9 lat po wyjściu pierwszej oficjalnej wersji Python'a, mając na celu uproszczenie instalacji third-party paczek.
+Jednakże, distutils dawało jedynie narzędzie służące do tworzenia paczek, dla kodu napisanego w Python'ie, i nic więcej. Umiało zebrać, i dystrybuować metadane paczki, ale nie używało ich w żaden inny sposób. Python ciągle potrzebował scentralizowanego katalogu paczek znajdującego się w internecie. PEP 241 \cite{PEP241} zaproponował standaryzacje indeksów, która została sfinalizowana w marcu 2001 roku.
 
-\paragraph{Używasz vscode?}
-Zobacz na polecane wtyczki w README.
 
-\paragraph{Jak wydzilić z tesktu}
-Jak cokolwiek chcesz oddzielic z tekstu możesz użyć \lcode{onepage[Xmm]}.
+\clearpage
 
-\begin{onepage}[1cm]
+\section{Cookiecutter}
+\label{section:cookiecutter}
+Cookiecutter \cite{CookieCutterDocumentation} \cite{CookiecutterGitHub} to command-line'owe narzędzie, którego zadaniem jest tworzenie projektów z tak zwanych cookiecutters, czyli gotowych szablonów, za pomocą, których Cookiecutter umie stworzyć szablon paczki.
+
+W tym celu użyty jest system templatowanie Jinja2, która potrafi inteligentnie zastąpić nazwy, strukturę folderów oraz plików i ich zawartości. Co bardzo dobrze pokazuje poniżej zamieszczony przykład \ref{img:cookiecutter_example}.
+
+\begin{figure}[h]
     \centering
-    Alias dolor odit. Velit et ut harum. Quos ullam enim suscipit qui omnis dolorum.
+    \bigimage{img/cookiecutter_example.png}
+    \caption{Przykład działania Cookiecutter'a \cite{CookiecutterExample}}
+    \label{img:cookiecutter_example}
+\end{figure}
+
+
+\clearpage
+\section{Tworzenie paczki}
+
+Używając gotowego szablonu Cookiecutter'a \ref{section:cookiecutter}
+\cite{geodemo} tworzymy szkielet naszej paczki.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Użycie Cookiecutter'a},
+    label=code:cookiecutter_gh,
+    language={Bash},
+    escapechar=`,
+    numbers=none
+]
+$ cookiecutter gh:giswqs/pypackage
+full_name [Qiusheng Wu]: Jan Bronicki
+email [admin@example.com]: janbronicki@gmail.com
+github_username [giswqs]: John15321
+project_name [Python Boilerplate]: Simple Game AI
+project_slug [simple_game_ai]: sgai
+project_short_description: Simple Game AI package allows to easily define an
+interface for a game and train a simple neural net to play it
+pypi_username [John15321]: John15321
+version [0.0.1]: 0.0.1
+use_pytest [n]:
+add_pyup_badge [n]:
+create_author_file [n]:
+Select command_line_interface:
+1 - No command-line interface
+2 - Click
+3 - Argparse
+Choose from 1, 2, 3 [1]: 1
+Select open_source_license:
+1 - MIT license
+2 - BSD license
+3 - ISC license
+4 - Apache Software License 2.0
+5 - GNU General Public License v3
+6 - Not open source
+Choose from 1, 2, 3, 4, 5, 6 [1]: 1
+Select github_default_branch:
+1 - main
+2 - master
+Choose from 1, 2 [1]: 2
+\end{lstlisting}
 \end{onepage}
 
-Reszta tekstu.
-Doloremque voluptas sit mollitia eos ut aut. Qui et distinctio vitae. Possimus et in. Est provident qui sequi est nobis cupiditate magni. Recusandae animi aut non ea autem ipsam dolores hic repellendus.
+Wybrany szablon przygotowuje nam wiele narzędzi takie jak na przykład \lcode{mkdcos}, narzędzie służące do generowania dokumetnacji w języku Markdown.
+Dodatkowo tworzy on automatycznie configurację CI/CD Pipeline.
 
-I chyba nic więcej nie potrzeba. Powodzenia!
+\clearpage
+
+Za pomocą komendy \lcode{tree} możemy zobczyć jaką strukturę paczki wygenerował, dla nas Cookiecutter \ref{code:tree_sgai_cookiecutter_template}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Wygenerowana struktura paczki za pomocą Cookiecutter'a},
+    label=code:tree_sgai_cookiecutter_template,
+    language={Bash},
+    numbers=none
+]
+$ tree
+.
+|-- docs
+|   |-- contributing.md
+|   |-- faq.md
+|   |-- index.md
+|   |-- installation.md
+|   |-- overrides
+|   |   `-- main.html
+|   |-- sgai.md
+|   `-- usage.md
+|-- LICENSE
+|-- MANIFEST.in
+|-- mkdocs.yml
+|-- README.md
+|-- requirements_dev.txt
+|-- requirements.txt
+|-- setup.cfg
+|-- setup.py
+|-- sgai
+|   |-- __init__.py
+|   `-- sgai.py
+`-- tests
+    |-- __init__.py
+    `-- test_sgai.py
+    \end{lstlisting}
+\end{onepage}
+
+
+Widzimy, że Cookiecutter stworzył (zaczynając alfabetycznie), folder \lcode{docs} w, którym mieści się dokumentacja napisana w języku Markdown, plik \lcode{LICENSE} opisujący licencję MIT \cite{LicencjaMIT} na, której wydana została paczka, plik \lcode{MANIFEST.in}, który opisuje dodatkowe pliki zawarte w paczce, które nie są kodem źródłowym takie jak \lcode{README.md} i \lcode{requirements.txt}, plik konfiguracyjny \lcode{mkdocs.yml} odpowiadający za konfiguracje dokumentacji Markdown, plik \lcode{README.md} opisujący podstawowe informacje apropos paczki, \lcode{requirements.txt}, który wskazuje pip'owi wymagane zależności wymagane, dla poprawnego działania paczki, \lcode{requirements_dev.txt}, czyli wymagane zależności do pracy nad paczką, takie jak formater kodu \lcode{black}, lub \lcode{pytest} służący do automatyzowania testów, \lcode{setup.cfg}, który funkcjonuje jako plik konfiguracyjny, dla \lcode{setup.py}.
+Następnie widzimy folder \lcode{sgai}, który jest miejscem na kod źródłowy.
+
+
+\clearpage
+
+Tak prezentuje się struktura projektu po dodaniu odpowiednich plików kodu źródłowego, gdzie najważniejsze to \ref{code:tree_sgai}:
+
+\begin{itemize}
+    \item \lcode{agent.py} - tworzy i reguluje parametry sieci neuronowej,
+    \item \lcode{config.py} - posiada konfiguracje parametrów procesu nauki sieci neuronowej takie jak \lcode{LEARNING_RATE},
+    \item \lcode{data_helper.py} - funkcje odpowiedzialne za rysowanie wykresów wizualizujących postępy nauki sieci neuronowej,
+    \item \lcode{model.py} - posiada model sieci neuronowej i jej mechanizmy nauki,
+    \item \lcode{trainer.py} - definiuje interfejs klasy abstrakcyjnej za pomocą, której użytkownik paczki łączy grę z treningiem sieci neuronowej.
+\end{itemize}
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Struktura gotowej paczki},
+    label=code:tree_sgai,
+    language={Bash},
+    numbers=none
+]
+$ tree
+.
+|-- AUTHORS.rst
+|-- docs
+|   |-- authors.rst
+|   |-- contributing.md
+|   |-- faq.md
+|   |-- index.md
+|   |-- installation.md
+|   |-- overrides
+|   |   `-- main.html
+|   |-- sgai.md
+|   `-- usage.md
+|-- LICENSE
+|-- MANIFEST.in
+|-- mkdocs.yml
+|-- README.md
+|-- requirements_dev.txt
+|-- requirements.txt
+|-- setup.cfg
+|-- setup.py
+|-- sgai
+|   |-- agent
+|   |   |-- agent.py
+|   |   |-- config.py
+|   |   |-- data_helper.py
+|   |   |-- __init__.py
+|   |   |-- model.py
+|   |   `-- trainer.py
+|   |-- __init__.py
+|   `-- sgai.py
+`-- tests
+    |-- __init__.py
+    `-- test_sgai.py
+    \end{lstlisting}
+\end{onepage}
+
+
+\clearpage
+
+\section{Publikowanie paczki}
+
+
+Następnie za pomocą skryptu \lcode{setup.py} tworzymy źródłową dystrybucje paczki, uzyskując plik z rozszerzeniem \lcode{.tar.gz} \ref{code:python_setuppy}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Generacja paczki},
+    label=code:python_setuppy,
+    language={Bash},
+    numbers=none
+]
+$ python setup.py sdist
+...
+Writing sgai-0.0.3/setup.cfg
+creating dist
+Creating tar archive
+    \end{lstlisting}
+\end{onepage}
+
+
+Owy plik znajduje się w nowo powstałym folderze \lcode{dist} w root'cie projektu \ref{code:tree_dist}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Zbudowana source distribution paczki},
+    label=code:tree_dist,
+    language={Bash},
+    numbers=none
+]
+$ tree
+.
+...
+|-- dist
+|   `-- sgai-0.0.3.tar.gz
+...
+    \end{lstlisting}
+\end{onepage}
+
+
+Następnie za pomocą narzędzia \lcode{twine} uploadujemy wygenerowany plik do indeksu PyPI \ref{section:pypi} \ref{code:twine_upload}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Upload zbudowanej paczki na PyPI},
+    label=code:twine_upload,
+    language={Bash},
+    numbers=none
+]
+$ twine upload ./dist/sgai-0.0.3.tar.gz
+Uploading distributions to https://upload.pypi.org/legacy/
+Enter your username: John15321
+Enter your password:
+Uploading sgai-0.0.3.tar.gz
+
+View at:
+https://pypi.org/project/sgai/0.0.3/
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Otwierając stronę pod adresem \url{https://pypi.org/project/sgai} widoczna i gotowa to instalacji jest paczka \lcode{sgai} \ref{img:sgai_on_pypi}.
+
+\begin{figure}[h]
+    \centering
+    \mediumimage{img/sgai_on_pypi.png}
+    \caption{Paczka sgai widoczna na stronie PyPI}
+    \label{img:sgai_on_pypi}
+\end{figure}
+
+Aby sprawdzić czy paczka została poprawnie dodana do globalnego indeksu PyPI w~nowym środowisku możemy spróbować zainstalować paczkę \lcode{sgai} w następujący sposób \ref{code:pip_install_gai}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Instalacja paczki używając narzędzia pip},
+    label=code:pip_install_gai,
+    language={Bash},
+    numbers=none
+]
+$ pip install sgai
+
+Collecting sgai
+  Downloading sgai-0.0.3.tar.gz (7.4 kB)
+  Preparing metadata (setup.py) ... done
+  ...
+\end{lstlisting}
+\end{onepage}
+
+Po zakończonej sukcesem instalacji, możemy sprawdzić czy pip widzi naszą paczke i jej wersje wykonując poniższą komende \ref{code:pip_list_gai}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Wylistowanie paczki za pomocą narzędzia pip},
+    label=code:pip_list_gai,
+    language={Bash},
+    numbers=none
+]
+$ pip list
+
+Package           Version
+----------------- -------
+...
+sgai              0.0.3
+...
+\end{lstlisting}
+\end{onepage}
+
+
+\clearpage
+
+Korzystając z interaktywnego interpretera Python'a, IPython, możemy spróbować zaimportować zainstalowaną paczkę i wyświetlić jej metadane \ref{code:import_sgai}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Importowanie zainstalowanej paczki},
+    label=code:import_sgai,
+    language={Python},
+    numbers=none
+]
+$ ipython
+
+In [1]: import sgai
+
+
+In [2]: sgai?
+Type:        module
+String form: <module 'sgai' from '/Users/jbron/sgai/sgai/__init__.py'>
+File:        ~/sgai/sgai/__init__.py
+Docstring:   Top-level package for Simple Game AI.
+
+\end{lstlisting}
+\end{onepage}
+
+Wszystko się zgadza co oznacza, że paczka została poprawnie udostępniona i zainstalowana.
+
+Dodatkowo możemy zobaczyć sporządzoną dokumentację na temat paczki na stronie \url{https://john15321.github.io/sgai/}, która jest hostowana dzięki serwisowy GitHub na, którym znajduje się kod źródłowy paczki \ref{img:githubdocs}.
+
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/githubdocs.png}
+    \caption{Dokumentacja paczki sgai}
+    \label{img:githubdocs}
+\end{figure}
+
+
+

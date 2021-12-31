@@ -1,0 +1,491 @@
+
+
+
+\section{Gra Snake}
+
+Snake \cite{SnakeGame} jest popularnym konceptem prostej gry komputerowej, gdzie gracz ma za zadanie manewrować poruszającą się linią w taki sposób, aby nie kolidowała ze sobą lub, dodatkowo ściankami planszy, w między czasie zbierając punkty losowo porozmieszczane po mapie. Linia ma za zadanie reprezentować ciało węża, który pełza, a punkty reprezentowane są w postaci owocu, lub prostej grupki pikseli.
+Odmiana użyta w celu testowania sieci neuronowej została na pisana w języku Python \ref{section:python}, przy użyciu paczki PyGame \ref{section:pygame}, która posłuży do reprezentacji graficznej postępowania sztucznej inteligencji oraz samej rozgrywki.
+Wąż został przestawiony w postaci linii składającej się z pojedynczych zielonych kwadratów. Wąż zaczyna z trzema zielonymi kwadratami, każdy dodatkowo zdobyty punkt podłuża węża o jeden kwadrat. Punkty możliwe do zdobycia są reprezentowane w postaci czerwonych kwadratów \ref{img:snake_game}.
+
+\begin{figure}[h!]
+    \centering
+    \mediumimage{img/snake1.png}
+    \caption{Gra Snake}
+    \label{img:snake_game}
+\end{figure}
+
+
+\section{Implementacja gry}
+
+
+Na początku zaimportowane zostają moduły potrzebne \ref{code:importsznejk} do uruchomienia gry i do jej wewnętrznych procesów.
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Importowanie modułów do gry Snake},
+        label=code:importsznejk,
+        language={Python},
+        numbers=none,
+        ]
+import random
+from enum import Enum
+from typing import Tuple
+
+import numpy as np
+import pygame
+    \end{lstlisting}
+\end{onepage}
+
+
+
+Stworzenie pomocniczych klas \ref{code:help_class} służących jako enumeratory na kolory i kierunki.
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Pomocnicze enumeratory gry Snake},
+        label=code:help_class,
+        language={Python},
+        numbers=none,
+        ]
+class GameColors(Enum):
+    WHITE: Tuple = (255, 255, 255)
+    RED: Tuple = (150, 0, 0)
+    DARK_GREEN: Tuple = (0, 60, 10)
+    LIGHT_GREEN: Tuple = (50, 160, 80)
+    BLACK: Tuple = (0, 0, 0)
+
+
+class GameDirection(Enum):
+    RIGHT = 1
+    LEFT = 2
+    UP = 3
+    DOWN = 4
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Klasa tworząca abstrakcję punktu na mapie powstałego z pikseli \ref{code:gamepoint}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Klasa odpowiadająca za punkty na mapie},
+        label=code:gamepoint,
+        language={Python},
+        numbers=none,
+        ]
+class GamePointOnTheMap:
+    def __init__(self, x: int, y: int) -> None:
+        self._x = None
+        self._y = None
+
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        if self.x == other.x and self.y == other.y:
+            return True
+        return False
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
+    @x.setter
+    def x(self, x):
+        self._x = x
+
+    @y.setter
+    def y(self, y):
+        self._y = y
+    \end{lstlisting}
+\end{onepage}
+
+Definicja głównej klasy odpowiedzialnej za mechanikę gry. W jej konstruktorze zainicjalizowane zostaje okno graficzne służące wizualizacji gry \ref{code:examplesnake}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Klasa implementują mechanikę gry Snake},
+        label=code:examplesnake,
+        language={Python},
+        numbers=none,
+        ]
+class ExampleSnakeGame:
+    def __init__(self, w: int = 640, h: int = 480):
+        self.w = w
+        self.h = h
+        self.display = pygame.display.set_mode((self.w, self.h))
+        pygame.display.set_caption("Snake")
+        self.clock = pygame.time.Clock()
+        self.reset_game_state()
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Funkcja odpowiadająca za resetowanie gry \ref{code:gamereset}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja resetująca rozgrywke},
+        label=code:gamereset,
+        language={Python},
+        numbers=none,
+        ]
+def reset_game_state(self):
+    # Initialize game state
+    self.direction = GameDirection.RIGHT
+
+    self.head = GamePointOnTheMap(self.w / 2, self.h / 2)
+    self.snake = [
+        self.head,
+        GamePointOnTheMap(self.head.x - BLOCK_SIZE, self.head.y),
+        GamePointOnTheMap(self.head.x - (2 * BLOCK_SIZE), self.head.y),
+    ]
+
+    self.score = 0
+    self.food = None
+    self._place_food()
+    self.frame_iteration_number = 0
+    \end{lstlisting}
+\end{onepage}
+
+
+Prywatna funkcja odpowiadająca za losowanie miejsca pojawienia się jedzenia, dla węża na mapie \ref{code:losulosu}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja umieszająca jedzenie na mapie},
+        label=code:losulosu,
+        language={Python},
+        numbers=none,
+        ]
+    def _place_food(self):
+        x = random.randint(0, (self.w - BLOCK_SIZE) // BLOCK_SIZE) * BLOCK_SIZE
+        y = random.randint(0, (self.h - BLOCK_SIZE) // BLOCK_SIZE) * BLOCK_SIZE
+        self.food = GamePointOnTheMap(x, y)
+        if self.food in self.snake:
+            self._place_food()
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Funkcja \lcode{play_step()} jest odpowiedzialna za każdą klatkę rozgrywki \ref{code:playsteppu}, na początku sprawdza czy użytkownik chce wyjść z rozgrywki, następnie wykonuje ruchy węża jakie miały nastąpić. Na podstawie wykonanego ruchu ocenia sytuację rozgrywki, i decyduje o~tym jaka powinna być nagroda za dany ruch. Gdzie zdobycie jedzenia to dodatkowe 10 punktów, nie zdobycie jedzenia to 0 punktów, a śmierć ujemne 10 punktów. Następnie zakładając, że wąż żyje, jedzenie jest umieszczane w innym miejscu, lub wąż wykonuje ruch. Po czym następuje aktualizacja interfejsu o kolejną klatkę i zwrócenie informacji o danej klatce takich jak nagroda i stan gry.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja implementacja mechanikę rozgrywki klatka po klatce},
+        label=code:playsteppu,
+        language={Python},
+        numbers=none,
+        ]
+def play_step(self, action) -> Tuple[int, bool, int]:
+    self.frame_iteration_number += 1
+    # 1. collect user input
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+    # 2. move
+    self._move(action)  # update the head
+    self.snake.insert(0, self.head)
+    # 3. Update the game state
+    # Eat food: +10
+    # Game Over: -10
+    # Else: 0
+    reward = 0
+    game_over = False
+    if self.is_collision() or self.frame_iteration_number>100*len(self.snake):
+        game_over = True
+        reward = -10
+        return reward, game_over, self.score
+    # 4. place new food or just move
+    if self.head == self.food:
+        self.score += 1
+        reward = 10
+        self._place_food()
+    else:
+        self.snake.pop()
+    # 5. update ui and clock
+    self._update_ui()
+    self.clock.tick(SPEED)
+    # 6. return game over and score
+    return reward, game_over, self.score
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Pomocnicza funkcja, której zadaniem jest wykrycie kolizji obiektów \ref{code:is_collision}. Sprawdza czy wąż napotkał barierę lub uderzył część samego siebie.
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja sprawdzająca kolizje},
+        label=code:is_collision,
+        language={Python},
+        numbers=none,
+        ]
+def is_collision(self, point=None):
+    if point is None:
+        point = self.head
+    # Check if it hits the boundary
+    if (
+        point.x > self.w - BLOCK_SIZE
+        or point.x < 0
+        or point.y > self.h - BLOCK_SIZE
+        or point.y < 0
+    ):
+        return True
+    # Check if it hits itself
+    if point in self.snake[1:]:
+        return True
+    return False
+    \end{lstlisting}
+\end{onepage}
+
+Pomocnicza prywatna funkcja odpowiedzialna za aktualizację interfejsu graficznego \ref{code:_update_ui}. Jest odpowiedzialna za ponowne narysowanie całej planszy gry co każdą klatkę/ruch w grze.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja uaktualniająca interfejs},
+        label=code:_update_ui,
+        language={Python},
+        numbers=none,
+        ]
+def _update_ui(self):
+    self.display.fill(GameColors.BLACK.value)
+    for pt in self.snake:
+        pygame.draw.rect(
+            self.display,
+            GameColors.DARK_GREEN.value,
+            pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE),
+        )
+        pygame.draw.rect(
+            self.display,
+            GameColors.LIGHT_GREEN.value,
+            pygame.Rect(pt.x + 4, pt.y + 4, 12, 12),
+        )
+    pygame.draw.rect(
+        self.display,
+        GameColors.RED.value,
+        pygame.Rect(self.food.x, self.food.y, BLOCK_SIZE, BLOCK_SIZE),
+    )
+    text = font.render(f"Score: {self.score}", True, GameColors.WHITE.value)
+    self.display.blit(text, [0, 0])
+    pygame.display.flip()
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Pomocnicza prywatna funkcja odpowiadająca za obliczanie następnej pozycji węża \ref{code:_move}. Zamienia wybrany kierunek skrętu wężem na konkretne pozycje jego ciała na planszy gry i~aktualizuje je.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Funkcja poruszającą wężem},
+        label=code:_move,
+        language={Python},
+        numbers=none,
+        ]
+def _move(self, action):
+    # [straight, right, left]
+    clock_wise = [
+        GameDirection.RIGHT,
+        GameDirection.DOWN,
+        GameDirection.LEFT,
+        GameDirection.UP,
+    ]
+    move_index = clock_wise.index(self.direction)
+    if np.array_equal(action, [1, 0, 0]):
+        new_direction = clock_wise[move_index]  # no change
+    elif np.array_equal(action, [0, 1, 0]):
+        next_idx = (move_index + 1) % 4
+        new_direction = clock_wise[next_idx]
+    else:  # [0, 0, 1]
+        next_idx = (move_index - 1) % 4
+        new_direction = clock_wise[next_idx]
+    self.direction = new_direction
+    x = self.head.x
+    y = self.head.y
+    if self.direction == GameDirection.RIGHT:
+        x += BLOCK_SIZE
+    elif self.direction == GameDirection.LEFT:
+        x -= BLOCK_SIZE
+    elif self.direction == GameDirection.DOWN:
+        y += BLOCK_SIZE
+    elif self.direction == GameDirection.UP:
+        y -= BLOCK_SIZE
+    self.head = GamePointOnTheMap(x=x, y=y)
+    \end{lstlisting}
+\end{onepage}
+
+
+
+\clearpage
+
+\section{Przykład użycia}
+
+Większość mechaniki gry została zaimplementowana w klasie \lcode{ExampleSnakeGame} \ref{code:examplesnake}, która odpowiada za mechanikę gry oraz przechowywanie jej stanu. Znajdują się w niej między innymi mechaniki odpowiedzialne za wykrywanie zderzeń, poruszanie się węża, sterowanie wężem, czy losowanie miejsca pojawienia się następnych punktów. Dodatkowo zaimplementowane zostały klasy enumeratorowe, takie jak \lcode{GameDirection} \ref{code:help_class} i \lcode{GamePointOnTheMap} \ref{code:gamepoint} w celu zwiększenia czytelności kodu \ref{code:import_snake}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Importowanie gry},
+        label=code:import_snake,
+        language={Python},
+        numbers=none,
+        ]
+import numpy as np
+import torch
+from sgai.agent.trainer import Trainer
+
+from snake import GameDirection, GamePointOnTheMap, ExampleSnakeGame
+    \end{lstlisting}
+\end{onepage}
+
+
+
+Następnie definiujemy potrzebny interfejs \lcode{Trainer} \ref{code:class_trainer}, aby paczka \lcode{sgai} umiała się komunikować z grą. Zaczynami od definicji klasy i jej konstruktora. W tym przykładzie wielkość warstwy ukrytej pozostawiamy nie zmienioną ponieważ podstawowa w pełni wystarczy do poziomu skomplikowania przygotowanej gry \ref{code:definition_my_trainer}.
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Definicja klasy \lcode{MyTrainer}},
+    label=code:definition_my_trainer,
+    language={Python},
+    numbers=none
+]
+class MyTrainer(Trainer):
+    def __init__( self, game, input_size, output_size, hidden_size):
+        super().__init__( game, input_size=input_size,
+            output_size=output_size, hidden_size=hidden_size,)
+    \end{lstlisting}
+\end{onepage}
+
+Następnie definiujemy dwie funkcje \lcode{get_state()} \ref{code:definition_get_state} oraz \lcode{perform_action()} \ref{code:definition_perform_action}. Są one interfejsem pomiędzy paczką \lcode{sgai}, a kodem gry, dlatego to użytkownik paczki musi je zaimplementować, ponieważ paczka nie ma możliwości posiadania wiedzy na temat własności działania kodu gry na, której będzie szkolić sieć neuronową. Na samym początku definiujemy stan gry, pobierając konkretne elementy rozgrywki takie jak pozycja węża, pozycja nagrody itp..
+
+\begin{onepage}
+    \begin{lstlisting}[
+        caption={Definicja funkcji \lcode{get_state()}},
+    label=code:definition_get_state,
+    language={Python},
+    numbers=none
+]
+def get_state(self) -> np.ndarray:
+    head = self.game.snake[0]
+    point_left = GamePointOnTheMap(head.x - 20, head.y)
+    point_right = GamePointOnTheMap(head.x + 20, head.y)
+    point_up = GamePointOnTheMap(head.x, head.y - 20)
+    point_down = GamePointOnTheMap(head.x, head.y + 20)
+    left_direction = self.game.direction == GameDirection.LEFT
+    right_direction = self.game.direction == GameDirection.RIGHT
+    up_direction = self.game.direction == GameDirection.UP
+    down_direction = self.game.direction == GameDirection.DOWN
+    \end{lstlisting}
+\end{onepage}
+
+W tym przykładzie zebranych będzie łącznie $11$ parametrów \ref{code:return_state} opisujących stan gry, które następnie zostaną przekazane sieci neuronowej jako wejście. Gdzie każda z wartości może być jedynie $0$, lub $1$, $0$ oznaczające \lcode{False}, a $1$ \lcode{True}.
+
+\begin{itemize}
+    \item Czy jakieś niebezpieczeństwo znajduje się naprzeciwko?
+    \item Czy niebezpieczeństwo znajduje się po prawej?
+    \item Czy niebezpieczeństwo znajduje się po lewej?
+    \item Czy wąż porusza się w lewo?
+    \item Czy wąż porusza się w prawo?
+    \item Czy wąż porusza się w górę?
+    \item Czy wąż porusza się w dół?
+    \item Czy jedzenie znajduje się po lewej?
+    \item Czy jedzenie znajduje się po prawej?
+    \item Czy jedzenie znajduje się nad wężem?
+    \item Czy jedzenie znajduje się pod wężem?
+\end{itemize}
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Zwracany stan},
+    label=code:return_state,
+    language={Python},
+    numbers=none
+]
+state = [
+    # Danger is straight ahead
+    (right_direction and self.game.is_collision(point_right))
+    or (left_direction and self.game.is_collision(point_left))
+    or (up_direction and self.game.is_collision(point_up))
+    or (down_direction and self.game.is_collision(point_down)),
+    # Danger is on the right
+    (up_direction and self.game.is_collision(point_right))
+    or (down_direction and self.game.is_collision(point_left))
+    or (left_direction and self.game.is_collision(point_up))
+    or (right_direction and self.game.is_collision(point_down)),
+    # Danger is on the left
+    (down_direction and self.game.is_collision(point_right))
+    or (up_direction and self.game.is_collision(point_left))
+    or (right_direction and self.game.is_collision(point_up))
+    or (left_direction and self.game.is_collision(point_down)),
+    # Current move direction
+    left_direction,
+    right_direction,
+    up_direction,
+    down_direction,
+    # Food location
+    self.game.food.x < self.game.head.x,  # Food is on the left
+    self.game.food.x > self.game.head.x,  # Food is on the right
+    self.game.food.y < self.game.head.y,  # Food is up
+    self.game.food.y > self.game.head.y,  # Food is down
+]
+return np.array(state, dtype=int)
+    \end{lstlisting}
+\end{onepage}
+
+\clearpage
+
+Ponieważ wewnętrzna funkcja \lcode{play_step()} gry sama zwraca nagrodę, stan oraz wynik gry (które są wynikiem podjętej przez nas akcji), zaimplementowanie funkcji \lcode{perform_action()} jest bardzo proste.
+
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Implementacja funkcji \lcode{perform_action()}},
+    label=code:definition_perform_action,
+    language={Python},
+    numbers=none
+]
+def perform_action(self, final_move) -> Tuple[int, bool, int]:
+    reward, game_over, score = self.game.play_step(final_move)
+    return reward, game_over, score
+    \end{lstlisting}
+\end{onepage}
+
+
+Tworzymy obiekt klasy \lcode{MyTrainer} \ref{code:mytrainer}, definiujemy jego parametry i uruchamiamy trening sieci neuronowej.
+
+\begin{onepage}
+    \begin{lstlisting}[
+    caption={Implementacja klasy Trainer},
+    label=code:mytrainer,
+    language={Python},
+    numbers=none
+]
+if __name__ == "__main__":
+    mt = MyTrainer(
+        game=ExampleSnakeGame(), input_size=11, output_size=3, hidden_size=256
+    )
+    mt.train(model_file="model.pth")
+\end{lstlisting}
+\end{onepage}
+
+Jak widać na poniższym wykresie \ref{img:ai_graph} w okolicach setnej rozgrywki, sieć neuronowa znacznie się poprawia. Następnie przez kolejne kilkaset gier widoczny jest jedynie marginalny postęp, przez to można stwierdzić że nastąpiło nasycenie spowodowane prostą budową sieci.
+
+\begin{figure}[h]
+    \centering
+    \bigimage{img/ai_graph2.png}
+    \caption{Wykres nauki sieci neuronowej}
+    \label{img:ai_graph}
+\end{figure}
